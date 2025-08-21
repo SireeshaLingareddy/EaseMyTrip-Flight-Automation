@@ -1,0 +1,209 @@
+2025-08-21 17:50:25 - INFO - ================================================================================
+2025-08-21 17:50:25 - INFO -  PYTEST SESSION STARTED - EaseMyTrip Automation
+2025-08-21 17:50:25 - INFO -  Framework: Pytest + Playwright + PyCharm Compatible
+2025-08-21 17:50:25 - INFO - ================================================================================
+2025-08-21 17:50:25 - INFO -  PART 2: Data-Driven UI Filter Testing (Pytest)
+2025-08-21 17:50:25 - INFO -  Testing EaseMyTrip UI Filter Functionality ONLY
+2025-08-21 17:50:25 - INFO - ================================================================================
+2025-08-21 17:50:25 - INFO -  Loaded 10 test cases
+2025-08-21 17:50:25 - INFO -  Test 1/10: TC001
+2025-08-21 17:50:25 - INFO - --------------------------------------------------
+2025-08-21 17:50:26 - INFO - Testing UI Filter: TC001
+2025-08-21 17:50:26 - INFO -    Description: Find 1-stop flights from Delhi to Mumbai with realistic pricing
+2025-08-21 17:50:26 - INFO -    Route: Delhi → Mumbai
+2025-08-21 17:50:26 - INFO -    Date: 2025-09-01
+2025-08-21 17:50:26 - INFO -    Filter Test: 1 Stop + ₹6,000-₹7,000
+2025-08-21 17:50:32 - INFO -      Selecting FROM city: Delhi
+2025-08-21 17:50:32 - INFO -          Using optimized strategy 1 for FROM city: Delhi
+2025-08-21 17:50:35 - INFO -             Found 4 suggestions after typing 'Delh'
+2025-08-21 17:50:36 - INFO -          FROM city selected: New Delhi(DEL)Indira Gandhi International Airport India Nearby Airport Found (Score: 1000, Type: exact_match)
+2025-08-21 17:50:37 - INFO -          Final FROM value: New Delhi
+2025-08-21 17:50:37 - INFO -      Selecting TO city: Mumbai
+2025-08-21 17:50:37 - INFO -          Using optimized strategy 3 for TO city: Mumbai
+2025-08-21 17:50:40 - INFO -             Found 6 suggestions after typing 'Mumb'
+2025-08-21 17:50:41 - INFO -          TO city selected: Mumbai(BOM)Chhatrapati Shivaji Maharaj International Airport India Nearby Airport Found (Score: 1000, Type: exact_match)
+2025-08-21 17:50:42 - INFO -          Final TO value: Mumbai
+2025-08-21 17:50:43 - INFO -      Verified: New Delhi → Mumbai
+2025-08-21 17:50:43 - INFO -       Setting departure date: 2025-09-01
+2025-08-21 17:50:44 - INFO -          Setting date using optimized strategy...
+2025-08-21 17:50:44 - INFO -          Date field clicked successfully
+2025-08-21 17:50:46 - INFO -          Date set successfully: 01/09/2025
+2025-08-21 17:50:47 - INFO -     Search button clicked successfully
+2025-08-21 17:51:03 - INFO -     Successfully navigated to results page
+2025-08-21 17:51:03 - INFO -     Search successful - reached results page
+2025-08-21 17:51:03 - INFO -    BEFORE filtering: 177 flights visible
+2025-08-21 17:51:03 - INFO -      Testing UI Filters...
+2025-08-21 17:51:08 - INFO -    1. Applying Stops Filter...
+2025-08-21 17:51:08 - INFO -        Testing Stops UI Filter: 1 Stop
+2025-08-21 17:51:08 - INFO -            Target checkbox: chkOneStop
+2025-08-21 17:51:08 - INFO -            Initial checked boxes: ['chkNonStop', 'chkOneStop', 'chkTwoStop']
+2025-08-21 17:51:09 - INFO -            Unchecked: chkNonStop
+2025-08-21 17:51:11 - INFO -            Unchecked: chkTwoStop
+2025-08-21 17:51:11 - INFO -            Target already checked: chkOneStop
+2025-08-21 17:51:15 - INFO -            Final checked boxes: ['chkOneStop']
+2025-08-21 17:51:15 - INFO -            SUCCESS: Only chkOneStop is checked
+2025-08-21 17:51:15 - INFO -         Stops filter applied successfully
+2025-08-21 17:51:15 - INFO -     Waiting for stops filter to complete...
+2025-08-21 17:51:21 - INFO -    2. Applying Price Filter...
+2025-08-21 17:51:21 - INFO -        Testing AngularJS Price Filter: ₹6,000-₹7,000
+2025-08-21 17:51:21 - INFO -           AngularJS Price Filter Applied: ₹6,000-₹7,000
+2025-08-21 17:51:21 - INFO -           Filtered 45 flights out of 177
+2025-08-21 17:51:21 - INFO -           Waiting for AngularJS filtering to complete...
+2025-08-21 17:51:31 - INFO -     Waiting for all filters to complete...
+2025-08-21 17:51:39 - INFO -     All UI Filters applied - ready for result extraction
+2025-08-21 17:51:39 - INFO -    AFTER UI filtering: 45 flights visible
+2025-08-21 17:51:39 - INFO -     Extracting flights matching BOTH filters...
+2025-08-21 17:51:39 - INFO -          Flights matching BOTH conditions: 25
+2025-08-21 17:51:39 - INFO -          Sample Flight 1: IndiGo ₹6089 1 Stop
+2025-08-21 17:51:39 - INFO -          Sample Flight 2: IndiGo ₹6089 1 Stop
+2025-08-21 17:51:39 - INFO -          Sample Flight 3: IndiGo ₹6089 1 Stop
+2025-08-21 17:51:39 - INFO -    UI Filter Applied - 25 flights extracted
+2025-08-21 17:51:39 - INFO -      TC001: UI Filter Test PASSED - 25 flights found
+2025-08-21 17:51:39 - INFO -  Test 2/10: TC002
+2025-08-21 17:51:39 - INFO - --------------------------------------------------
+2025-08-21 17:51:40 - INFO - Testing UI Filter: TC002
+2025-08-21 17:51:40 - INFO -    Description: Find non-stop flights from Delhi to Mumbai with realistic budget
+2025-08-21 17:51:40 - INFO -    Route: Bengaluru → Mumbai
+2025-08-21 17:51:40 - INFO -    Date: 2025-09-02
+2025-08-21 17:51:40 - INFO -    Filter Test: Non-stop + ₹3,000-₹4,500
+2025-08-21 17:51:48 - INFO -      Selecting FROM city: Bengaluru
+2025-08-21 17:51:48 - INFO -          Using optimized strategy 1 for FROM city: Bengaluru
+2025-08-21 17:51:52 - INFO -             Found 4 suggestions after typing 'Bengalur'
+2025-08-21 17:51:53 - INFO -          FROM city selected: Bengaluru(BLR)Kempegowda International Airport India Nearby Airport Found (Score: 1000, Type: exact_match)
+2025-08-21 17:51:54 - INFO -          Final FROM value: Bengaluru
+2025-08-21 17:51:54 - INFO -      Selecting TO city: Mumbai
+2025-08-21 17:51:54 - INFO -          Using optimized strategy 3 for TO city: Mumbai
+2025-08-21 17:51:57 - INFO -             Found 6 suggestions after typing 'Mumb'
+2025-08-21 17:51:58 - INFO -          TO city selected: Mumbai(BOM)Chhatrapati Shivaji Maharaj International Airport India Nearby Airport Found (Score: 1000, Type: exact_match)
+2025-08-21 17:51:58 - INFO -          Final TO value: Mumbai
+2025-08-21 17:51:59 - INFO -      Verified: Bengaluru → Mumbai
+2025-08-21 17:51:59 - INFO -       Setting departure date: 2025-09-02
+2025-08-21 17:52:01 - INFO -          Setting date using optimized strategy...
+2025-08-21 17:52:01 - INFO -          Date field clicked successfully
+2025-08-21 17:52:03 - INFO -          Date set successfully: 02/09/2025
+2025-08-21 17:52:04 - INFO -     Search button clicked successfully
+2025-08-21 17:52:19 - INFO -     Successfully navigated to results page
+2025-08-21 17:52:19 - INFO -     Search successful - reached results page
+2025-08-21 17:52:19 - INFO -    BEFORE filtering: 125 flights visible
+2025-08-21 17:52:19 - INFO -      Testing UI Filters...
+2025-08-21 17:52:24 - INFO -    1. Applying Stops Filter...
+2025-08-21 17:52:24 - INFO -        Testing Stops UI Filter: Non-stop
+2025-08-21 17:52:24 - INFO -            Target checkbox: chkNonStop
+2025-08-21 17:52:24 - INFO -            Initial checked boxes: ['chkNonStop', 'chkOneStop', 'chkTwoStop']
+2025-08-21 17:52:26 - INFO -            Unchecked: chkOneStop
+2025-08-21 17:52:28 - INFO -            Unchecked: chkTwoStop
+2025-08-21 17:52:28 - INFO -            Target already checked: chkNonStop
+2025-08-21 17:52:32 - INFO -            Final checked boxes: ['chkNonStop']
+2025-08-21 17:52:32 - INFO -            SUCCESS: Only chkNonStop is checked
+2025-08-21 17:52:32 - INFO -         Stops filter applied successfully
+2025-08-21 17:52:32 - INFO -     Waiting for stops filter to complete...
+2025-08-21 17:52:38 - INFO -    2. Applying Price Filter...
+2025-08-21 17:52:38 - INFO -        Testing AngularJS Price Filter: ₹3,000-₹4,500
+2025-08-21 17:52:38 - INFO -           AngularJS Price Filter Applied: ₹4,203-₹4,500
+2025-08-21 17:52:38 - INFO -           Filtered 22 flights out of 125
+2025-08-21 17:52:38 - INFO -           Waiting for AngularJS filtering to complete...
+2025-08-21 17:52:48 - INFO -     Waiting for all filters to complete...
+2025-08-21 17:52:56 - INFO -     All UI Filters applied - ready for result extraction
+2025-08-21 17:52:56 - INFO -    AFTER UI filtering: 22 flights visible
+2025-08-21 17:52:56 - INFO -     Extracting flights matching BOTH filters...
+2025-08-21 17:52:56 - INFO -          Flights matching BOTH conditions: 11
+2025-08-21 17:52:56 - INFO -          Sample Flight 1: AkasaAir ₹4203 Non-stop
+2025-08-21 17:52:56 - INFO -          Sample Flight 2: AkasaAir ₹4287 Non-stop
+2025-08-21 17:52:56 - INFO -          Sample Flight 3: IndiGo ₹4299 Non-stop
+2025-08-21 17:52:56 - INFO -    UI Filter Applied - 11 flights extracted
+2025-08-21 17:52:56 - INFO -      TC002: UI Filter Test PASSED - 11 flights found
+2025-08-21 17:52:56 - INFO -  Test 3/10: TC003
+2025-08-21 17:52:56 - INFO - --------------------------------------------------
+2025-08-21 17:52:57 - INFO - Testing UI Filter: TC003
+2025-08-21 17:52:57 - INFO -    Description: Find 2-stop flights from Delhi to Mumbai with extended budget
+2025-08-21 17:52:57 - INFO -    Route: Hyderabad → Delhi
+2025-08-21 17:52:57 - INFO -    Date: 2025-09-03
+2025-08-21 17:52:57 - INFO -    Filter Test: 2+ Stop + ₹5,000-₹7,000
+2025-08-21 17:53:02 - INFO -      Selecting FROM city: Hyderabad
+2025-08-21 17:53:02 - INFO -          Using optimized strategy 1 for FROM city: Hyderabad
+2025-08-21 17:53:05 - INFO -             Found 6 suggestions after typing 'Hyde'
+2025-08-21 17:53:06 - INFO -          FROM city selected: Hyderabad(HYD)Rajiv Gandhi International Airport India Nearby Airport Found (Score: 1000, Type: exact_match)
+2025-08-21 17:53:07 - INFO -          Final FROM value: Hyderabad
+2025-08-21 17:53:07 - INFO -      Selecting TO city: Delhi
+2025-08-21 17:53:07 - INFO -          Using optimized strategy 3 for TO city: Delhi
+2025-08-21 17:53:10 - INFO -             Found 4 suggestions after typing 'Delh'
+2025-08-21 17:53:11 - INFO -          TO city selected: New Delhi(DEL)Indira Gandhi International Airport India Nearby Airport Found (Score: 1000, Type: exact_match)
+2025-08-21 17:53:12 - INFO -          Final TO value: New Delhi
+2025-08-21 17:53:13 - INFO -      Verified: Hyderabad → New Delhi
+2025-08-21 17:53:13 - INFO -       Setting departure date: 2025-09-03
+2025-08-21 17:53:14 - INFO -          Setting date using optimized strategy...
+2025-08-21 17:53:14 - INFO -          Date field clicked successfully
+2025-08-21 17:53:16 - INFO -          Date set successfully: 03/09/2025
+2025-08-21 17:53:18 - INFO -     Search button clicked successfully
+2025-08-21 17:53:33 - INFO -     Successfully navigated to results page
+2025-08-21 17:53:33 - INFO -     Search successful - reached results page
+2025-08-21 17:53:33 - INFO -    BEFORE filtering: 144 flights visible
+2025-08-21 17:53:33 - INFO -      Testing UI Filters...
+2025-08-21 17:53:38 - INFO -    1. Applying Stops Filter...
+2025-08-21 17:53:38 - INFO -        Testing Stops UI Filter: 2+ Stop
+2025-08-21 17:53:38 - INFO -            Target checkbox: chkTwoStop
+2025-08-21 17:53:38 - INFO -            Initial checked boxes: ['chkNonStop', 'chkOneStop', 'chkTwoStop']
+2025-08-21 17:53:39 - INFO -            Unchecked: chkNonStop
+2025-08-21 17:53:41 - INFO -            Unchecked: chkOneStop
+2025-08-21 17:53:41 - INFO -            Target already checked: chkTwoStop
+2025-08-21 17:53:45 - INFO -            Final checked boxes: ['chkTwoStop']
+2025-08-21 17:53:45 - INFO -            SUCCESS: Only chkTwoStop is checked
+2025-08-21 17:53:45 - INFO -         Stops filter applied successfully
+2025-08-21 17:53:45 - INFO -     Waiting for stops filter to complete...
+2025-08-21 17:53:51 - INFO -    2. Applying Price Filter...
+2025-08-21 17:53:51 - INFO -        Testing AngularJS Price Filter: ₹5,000-₹7,000
+2025-08-21 17:53:51 - INFO -           AngularJS Price Filter Applied: ₹5,000-₹7,000
+2025-08-21 17:53:51 - INFO -           Filtered 30 flights out of 144
+2025-08-21 17:53:51 - INFO -           Waiting for AngularJS filtering to complete...
+2025-08-21 17:54:01 - INFO -     Waiting for all filters to complete...
+2025-08-21 17:54:09 - INFO -     All UI Filters applied - ready for result extraction
+2025-08-21 17:54:09 - INFO -    AFTER UI filtering: 30 flights visible
+2025-08-21 17:54:09 - INFO -     Extracting flights matching BOTH filters...
+2025-08-21 17:54:09 - INFO -          Flights matching BOTH conditions: 1
+2025-08-21 17:54:09 - INFO -          Sample Flight 1: Air India Express ₹5048 2+ Stop
+2025-08-21 17:54:09 - INFO -    UI Filter Applied - 1 flights extracted
+2025-08-21 17:54:09 - INFO -      TC003: UI Filter Test PASSED - 1 flights found
+2025-08-21 17:54:09 - INFO -  Test 4/10: TC004
+2025-08-21 17:54:09 - INFO - --------------------------------------------------
+2025-08-21 17:54:10 - INFO - Testing UI Filter: TC004
+2025-08-21 17:54:10 - INFO -    Description: Find non-stop flights from Delhi to Bengaluru with premium pricing
+2025-08-21 17:54:10 - INFO -    Route: Delhi → Bengaluru
+2025-08-21 17:54:10 - INFO -    Date: 2025-09-04
+2025-08-21 17:54:10 - INFO -    Filter Test: Non-stop + ₹7,000-₹8,000
+2025-08-21 17:54:19 - INFO -      Selecting FROM city: Delhi
+2025-08-21 17:54:19 - INFO -          Using optimized strategy 1 for FROM city: Delhi
+2025-08-21 17:54:21 - INFO -             Found 4 suggestions after typing 'Delh'
+2025-08-21 17:54:22 - INFO -          FROM city selected: New Delhi(DEL)Indira Gandhi International Airport India Nearby Airport Found (Score: 1000, Type: exact_match)
+2025-08-21 17:54:23 - INFO -          Final FROM value: New Delhi
+2025-08-21 17:54:23 - INFO -      Selecting TO city: Bengaluru
+2025-08-21 17:54:23 - INFO -          Using optimized strategy 3 for TO city: Bengaluru
+2025-08-21 17:54:26 - INFO -             Found 9 suggestions after typing 'Beng'
+2025-08-21 17:54:27 - INFO -          TO city selected: Bengaluru(BLR)Kempegowda International Airport India Nearby Airport Found (Score: 1000, Type: exact_match)
+2025-08-21 17:54:28 - INFO -          Final TO value: Bengaluru
+2025-08-21 17:54:29 - INFO -      Verified: New Delhi → Bengaluru
+2025-08-21 17:54:29 - INFO -       Setting departure date: 2025-09-04
+2025-08-21 17:54:30 - INFO -          Setting date using optimized strategy...
+2025-08-21 17:54:30 - INFO -          Date field clicked successfully
+2025-08-21 17:54:32 - INFO -          Date set successfully: 04/09/2025
+2025-08-21 17:54:34 - INFO -     Search button clicked successfully
+2025-08-21 17:54:49 - INFO -     Successfully navigated to results page
+2025-08-21 17:54:49 - INFO -     Search successful - reached results page
+2025-08-21 17:54:49 - INFO -    BEFORE filtering: 177 flights visible
+2025-08-21 17:54:49 - INFO -      Testing UI Filters...
+2025-08-21 17:54:54 - INFO -    1. Applying Stops Filter...
+2025-08-21 17:54:54 - INFO -        Testing Stops UI Filter: Non-stop
+2025-08-21 17:54:54 - INFO -            Target checkbox: chkNonStop
+2025-08-21 17:54:54 - INFO -            Initial checked boxes: ['chkNonStop', 'chkOneStop', 'chkTwoStop']
+2025-08-21 17:54:56 - INFO -            Unchecked: chkOneStop
+2025-08-21 17:54:57 - INFO -            Unchecked: chkTwoStop
+2025-08-21 17:54:57 - INFO -            Target already checked: chkNonStop
+2025-08-21 17:55:01 - INFO -            Final checked boxes: ['chkNonStop']
+2025-08-21 17:55:01 - INFO -            SUCCESS: Only chkNonStop is checked
+2025-08-21 17:55:01 - INFO -         Stops filter applied successfully
+2025-08-21 17:55:01 - INFO -     Waiting for stops filter to complete...
+2025-08-21 17:55:07 - INFO -    2. Applying Price Filter...
+2025-08-21 17:55:07 - INFO -        Testing AngularJS Price Filter: ₹7,000-₹8,000
+2025-08-21 17:55:07 - INFO -           AngularJS Price Filter Applied: ₹7,000-₹8,000
+2025-08-21 17:55:07 - INFO -           Filtered 19 flights out of 177
+2025-08-21 17:55:07 - INFO -           Waiting for AngularJS filtering to complete...
+2025-08-21 17:55:17 - INFO -     Waiting for all filters to complete...

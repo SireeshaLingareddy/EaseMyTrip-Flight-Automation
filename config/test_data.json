@@ -1,0 +1,103 @@
+[
+    {
+        "test_id": "TC001",
+        "description": "Find 1-stop flights from Delhi to Mumbai with realistic pricing",
+        "from_city": "Delhi",
+        "to_city": "Mumbai", 
+        "departure_date": "2025-09-01",
+        "stops_filter": "1 Stop",
+        "price_min": 6000,
+        "price_max": 7000
+    },
+    {
+        "test_id": "TC002",
+        "description": "Find non-stop flights from Delhi to Mumbai with realistic budget",
+        "from_city": "Bengaluru",
+        "to_city": "Mumbai",
+        "departure_date": "2025-09-02",
+        "stops_filter": "Non-stop",
+        "price_min": 3000,
+        "price_max": 4500 
+    },
+    {
+        "test_id": "TC003",
+        "description": "Find 2-stop flights from Delhi to Mumbai with extended budget",
+        "from_city": "Hyderabad",
+        "to_city":"Delhi",
+        "departure_date": "2025-09-03",
+        "stops_filter": "2+ Stop",
+        "price_min": 5000,
+        "price_max": 7000
+    },
+    {
+        "test_id": "TC004",
+        "description": "Find non-stop flights from Delhi to Bengaluru with premium pricing",
+        "from_city": "Delhi",
+        "to_city": "Bengaluru",
+        "departure_date": "2025-09-04",
+        "stops_filter": "Non-stop",
+        "price_min": 7000,
+        "price_max": 8000
+    },
+    {
+        "test_id": "TC005",
+        "description": "Find 1-stop flights from Mumbai to Chennai with budget pricing",
+        "from_city": "Mumbai",
+        "to_city": "Chennai",
+        "departure_date": "2025-09-05",
+        "stops_filter": "1 Stop",
+        "price_min": 13700,
+        "price_max": 18000
+    },
+    {
+        "test_id": "TC006",
+        "description": "Find non-stop flights from Delhi to Kolkata with mid-range budget",
+        "from_city": "Delhi",
+        "to_city": "Kolkata",
+        "departure_date": "2025-09-06",
+        "stops_filter": "Non-stop",
+        "price_min": 1500,
+        "price_max": 2500
+    },
+    {
+        "test_id": "TC007",
+        "description": "Find 2-stop flights from Mumbai to Bengaluru with flexible pricing",
+        "from_city": "Mumbai",
+        "to_city": "Bengaluru",
+        "departure_date": "2025-09-07",
+        "stops_filter": "1 Stop",
+        "price_min": 6000,
+        "price_max": 7500
+    },
+    {
+        "test_id": "TC008",
+        "description": "Find 1-stop flights from Delhi to Hyderabad with reasonable budget",
+        "from_city": "Delhi",
+        "to_city": "Hyderabad",
+        "departure_date": "2025-09-08",
+        "stops_filter": "1 Stop",
+        "price_min": 25000,
+        "price_max": 28500
+    },
+    {
+        "test_id": "TC009",
+        "description": "Find non-stop flights from Mumbai to Pune with short-distance pricing",
+        "from_city": "Mumbai",
+        "to_city": "Pune",
+        "departure_date": "2025-09-09",
+        "stops_filter": "2+ Stop",
+        "price_min": 5000,
+        "price_max": 6500
+    },
+     {
+        "test_id": "TC010",
+        "description": "Find 1-stop flights from Bengaluru to Goa with vacation budget",
+        "from_city": "Bengaluru",
+        "to_city": "Goa",
+        "departure_date": "2025-09-10",
+        "stops_filter": "1 Stop",
+        "price_min": 1800,
+        "price_max": 4500
+    }
+]
+  

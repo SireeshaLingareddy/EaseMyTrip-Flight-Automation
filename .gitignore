@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+.playwright/
+.playwright-cache/
+pytest_cache/
+*.xlsx
+*.xls
+.DS_Store

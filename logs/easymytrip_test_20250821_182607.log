@@ -1,0 +1,79 @@
+2025-08-21 18:26:07 - INFO - ================================================================================
+2025-08-21 18:26:07 - INFO -  PYTEST SESSION STARTED - EaseMyTrip Automation
+2025-08-21 18:26:07 - INFO -  Framework: Pytest + Playwright + PyCharm Compatible
+2025-08-21 18:26:07 - INFO - ================================================================================
+2025-08-21 18:26:07 - INFO -  PART 1: Flight Search Automation - Core Implementation (Pytest)
+2025-08-21 18:26:07 - INFO -  Single test case with filters and data extraction
+2025-08-21 18:26:07 - INFO - ================================================================================
+2025-08-21 18:26:07 - INFO -  Part 1 Configuration:
+2025-08-21 18:26:07 - INFO -    Route: Delhi → Bengaluru
+2025-08-21 18:26:07 - INFO -    Date: 2025-09-01
+2025-08-21 18:26:07 - INFO -    Stops Filter: Non-stop
+2025-08-21 18:26:07 - INFO -    Price Range: ₹2,000-₹8,000
+2025-08-21 18:26:07 - INFO - ------------------------------------------------------------
+2025-08-21 18:26:10 - INFO - Testing UI Filter: PART1_CORE_PYTEST
+2025-08-21 18:26:10 - INFO -    Description: Part 1 core automation: 1 Stop flights Delhi to Bengaluru with ₹4000-₹8000 price range
+2025-08-21 18:26:10 - INFO -    Route: Delhi → Bengaluru
+2025-08-21 18:26:10 - INFO -    Date: 2025-09-01
+2025-08-21 18:26:10 - INFO -    Filter Test: Non-stop + ₹2,000-₹8,000
+2025-08-21 18:26:16 - INFO -      Selecting FROM city: Delhi
+2025-08-21 18:26:19 - INFO -             Found 4 suggestions after typing 'Delh'
+2025-08-21 18:26:20 - INFO -          FROM city selected: New Delhi(DEL)Indira Gandhi International Airport India Nearby Airport Found (Score: 1000, Type: exact_match)
+2025-08-21 18:26:21 - INFO -          Final FROM value: New Delhi
+2025-08-21 18:26:21 - INFO -      Selecting TO city: Bengaluru
+2025-08-21 18:26:23 - INFO -             Found 9 suggestions after typing 'Beng'
+2025-08-21 18:26:24 - INFO -          TO city selected: Bengaluru(BLR)Kempegowda International Airport India Nearby Airport Found (Score: 1000, Type: exact_match)
+2025-08-21 18:26:25 - INFO -          Final TO value: Bengaluru
+2025-08-21 18:26:26 - INFO -      Verified: New Delhi → Bengaluru
+2025-08-21 18:26:26 - INFO -       Setting departure date: 2025-09-01
+2025-08-21 18:26:28 - INFO -          Setting date using optimized strategy...
+2025-08-21 18:26:28 - INFO -          Date field clicked successfully
+2025-08-21 18:26:30 - INFO -          Date set successfully: 01/09/2025
+2025-08-21 18:26:31 - INFO -     Search button clicked successfully
+2025-08-21 18:26:46 - INFO -     Successfully navigated to results page
+2025-08-21 18:26:46 - INFO -     Search successful - reached results page
+2025-08-21 18:26:46 - INFO -    BEFORE filtering: 182 flights visible
+2025-08-21 18:26:46 - INFO -      Testing UI Filters...
+2025-08-21 18:26:51 - INFO -    1. Applying Stops Filter...
+2025-08-21 18:26:51 - INFO -        Testing Stops UI Filter: Non-stop
+2025-08-21 18:26:51 - INFO -            Target checkbox: chkNonStop
+2025-08-21 18:26:51 - INFO -            Initial checked boxes: ['chkNonStop', 'chkOneStop', 'chkTwoStop']
+2025-08-21 18:26:53 - INFO -            Unchecked: chkOneStop
+2025-08-21 18:26:55 - INFO -            Unchecked: chkTwoStop
+2025-08-21 18:26:55 - INFO -            Target already checked: chkNonStop
+2025-08-21 18:26:59 - INFO -            Final checked boxes: ['chkNonStop']
+2025-08-21 18:26:59 - INFO -            SUCCESS: Only chkNonStop is checked
+2025-08-21 18:26:59 - INFO -         Stops filter applied successfully
+2025-08-21 18:26:59 - INFO -     Waiting for stops filter to complete...
+2025-08-21 18:27:05 - INFO -    2. Applying Price Filter...
+2025-08-21 18:27:05 - INFO -        Testing AngularJS Price Filter: ₹2,000-₹8,000
+2025-08-21 18:27:05 - INFO -           AngularJS Price Filter Applied: ₹5,057-₹8,000
+2025-08-21 18:27:05 - INFO -           Filtered 79 flights out of 182
+2025-08-21 18:27:05 - INFO -           Waiting for AngularJS filtering to complete...
+2025-08-21 18:27:15 - INFO -     Waiting for all filters to complete...
+2025-08-21 18:27:23 - INFO -     All UI Filters applied - ready for result extraction
+2025-08-21 18:27:23 - INFO -    AFTER UI filtering: 79 flights visible
+2025-08-21 18:27:23 - INFO -     Extracting flights matching BOTH filters...
+2025-08-21 18:27:23 - INFO -          Flights matching BOTH conditions: 37
+2025-08-21 18:27:23 - INFO -          Sample Flight 1: AkasaAir ₹6424 Non-stop
+2025-08-21 18:27:23 - INFO -          Sample Flight 2: Air India ₹6680 Non-stop
+2025-08-21 18:27:23 - INFO -          Sample Flight 3: Air India ₹6680 Non-stop
+2025-08-21 18:27:23 - INFO -    UI Filter Applied - 37 flights extracted
+2025-08-21 18:27:23 - INFO -   Success: Found 182 flights for your search
+2025-08-21 18:27:23 - INFO -  Filter Status: PASSED
+2025-08-21 18:27:23 - INFO -  Extracting and consolidating flight data...
+2025-08-21 18:27:23 - INFO -  Consolidation complete: 37 flights meet all criteria
+2025-08-21 18:27:23 - INFO -  Airlines found: IndiGo, Air India Express, AkasaAir, SpiceJet, Air India
+2025-08-21 18:27:23 - INFO -  Price range: ₹6,424 - ₹7,900
+2025-08-21 18:27:23 - INFO -  Saving data to Excel file (Part 1 Assignment Format)
+2025-08-21 18:27:23 - INFO -  Excel file saved successfully: Part1_Core_Automation_Pytest_Results_20250821_182723.xlsx
+2025-08-21 18:27:23 - INFO -  Data format: Assignment compliant (Airline Name, Price, Airport Codes)
+2025-08-21 18:27:23 - INFO -  Consolidation: Grouped by airline, sorted by price
+2025-08-21 18:27:23 - INFO -  SUCCESS: PART 1 AUTOMATION COMPLETED SUCCESSFULLY!
+2025-08-21 18:27:23 - INFO -  Total flights found: 182
+2025-08-21 18:27:23 - INFO -  Filtered flights (meeting criteria): 37
+2025-08-21 18:27:23 - INFO -  Excel report: Part1_Core_Automation_Pytest_Results_20250821_182723.xlsx
+2025-08-21 18:27:23 - INFO -  Airlines found: 5
+2025-08-21 18:27:23 - INFO -  Price range found: ₹6,424 - ₹7,900
+2025-08-21 18:27:23 - INFO -  PART 1 PYTEST TEST COMPLETED SUCCESSFULLY!
+2025-08-21 18:27:23 - INFO - ================================================================================
