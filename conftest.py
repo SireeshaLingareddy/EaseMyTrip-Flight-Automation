@@ -74,7 +74,7 @@ def part1_hardcoded_config():
         departure_date="2025-09-01",
         stops_filter="Non-stop",
         price_min=2000,
-        price_max=8000
+        price_max=4000
     )
 
 

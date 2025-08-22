@@ -1,7 +1,5 @@
 """
 EaseMyTrip Pure UI Filter Testing Engine
-
-This module tests ONLY UI filtering functionality without any code-level validation.
 """
 
 from typing import List, Dict, Any
@@ -31,12 +29,6 @@ class PureUIFilterEngine:
         """Initialize the UI Filter Testing Engine"""
         test_logger = TestLogger()
         self.logger = test_logger.logger
-        
-        # Store extracted airport codes for current test
-        self.selected_airport_codes = {
-            'from_airport_code': '',
-            'to_airport_code': ''
-        }
         
     def test_ui_filter_functionality(self, config: TestConfig) -> Dict[str, Any]:
         """
@@ -148,7 +140,7 @@ class PureUIFilterEngine:
             # Date Selection 
             formatted_date = self._format_date_for_input(config.departure_date)
             
-            # Direct date field click (Strategy 1 - Proven Working)
+            # Direct date field click
             try:
                 self.logger.info(f"         Setting date using optimized strategy...")
                 page.click('#ddate', timeout=8000)
@@ -190,70 +182,29 @@ class PureUIFilterEngine:
             """)
             page.wait_for_timeout(1000)
             
-            # Submit search - try multiple approaches
-            search_success = False
-            
-            # Method 1: Direct click
+            # Submit search using simple click
             try:
                 page.click('[value="Search"]', timeout=5000)
-                search_success = True
                 self.logger.info(f"    Search button clicked successfully")
-            except:
-                pass
-            
-            # Method 2: JavaScript click if direct click fails
-            if not search_success:
-                try:
-                    page.evaluate("""
-                        const searchBtn = document.querySelector('[value="Search"]');
-                        if (searchBtn) {
-                            searchBtn.click();
-                        }
-                    """)
-                    search_success = True
-                    self.logger.info(f"    Search button clicked via JavaScript")
-                except:
-                    pass
-            
-            # Method 3: Find and click the specific search function
-            if not search_success:
-                try:
-                    page.evaluate("SearchFlightWithArmyTest();")
-                    search_success = True
-                    self.logger.info(f"    Search triggered via function call")
-                except:
-                    pass
-            
-            if not search_success:
-                self.logger.error(f"    All search methods failed")
+            except Exception as e:
+                self.logger.error(f"    Search button click failed: {e}")
                 return False
             
             page.wait_for_timeout(15000)  # Wait for results to load
             
-            # Check for results page - simplified and efficient
+            # Check for results page - use only the working strategy
             try:
-                # Primary check: Look for flight results (this is what actually works)
-                page.wait_for_selector('.fltResult, .flight-results, .flights-list, .flight-list', timeout=10000)
+                page.wait_for_selector('.fltResult', timeout=10000)
                 self.logger.info(f"    Successfully navigated to results page")
             except:
-                # Fallback: Check for filter elements as secondary indicator
-                try:
-                    page.wait_for_selector('#chkNonStop, .filter-section, .filters', timeout=5000)
-                    self.logger.info(f"    Results page detected via filter elements")
-                except:
-                    self.logger.error(f"    Failed to load results page")
-                    current_url = page.url
-                    self.logger.info(f"    Current URL: {current_url}")
-                    return False
+                self.logger.error(f"    Failed to load results page")
+                current_url = page.url
+                self.logger.info(f"    Current URL: {current_url}")
+                return False
             
-            # Verify results page
-            current_url = page.url
-            if "FlightList" in current_url:
-                self.logger.info(f"    Search successful - reached results page")
-                return True
-            else:
-                self.logger.info(f"    Search completed - proceeding with results page")
-                return True
+            # Results page loaded successfully
+            self.logger.info(f"    Search successful - results page loaded")
+            return True
                 
         except Exception as e:
             self.logger.error(f"    Search error: {e}")
@@ -506,12 +457,6 @@ class PureUIFilterEngine:
                     # Extract airport code from selected text
                     airport_code = self._extract_airport_code(selected_text)
                     if airport_code:
-                        # Store the airport code for later use
-                        if field_type.lower() == 'from':
-                            self.selected_airport_codes['from_airport_code'] = airport_code
-                        elif field_type.lower() == 'to':
-                            self.selected_airport_codes['to_airport_code'] = airport_code
-                        
                         self.logger.info(f"         {field_type.upper()} city selected: {selected_text} "
                                        f"(Score: {match_score}, Type: {match_type}, Airport: {airport_code})")
                     else:
@@ -547,97 +492,56 @@ class PureUIFilterEngine:
                         for i, match in enumerate(sorted_matches, 1):
                             self.logger.info(f"         Match {i}: '{match['suggestion']}' -> Score: {match['score']} ({match['type']})")
             else:
-                # STEP 3b: Handle case when autocomplete suggestions weren't detected
-                self.logger.warning(f"         {field_type.upper()} autocomplete suggestions not detected for '{city_name}'")
+                # Robust fallback for autocomplete detection issues
+                self.logger.warning(f"         {field_type.upper()} autocomplete not detected for '{city_name}'")
                 
-                # Try to force check suggestions anyway (in case they exist but weren't detected)
-                final_attempt = page.evaluate(f"""
+                # Try a more thorough autocomplete check
+                fallback_result = page.evaluate(f"""
                     () => {{
                         const container = document.querySelector('{autocomplete_container}');
-                        if (!container) return {{success: false, error: 'No autocomplete container found'}};
+                        if (!container) return {{success: false, error: 'No container found'}};
                         
-                        const suggestions = container.querySelectorAll('li, .city-option, .suggestion, a');
+                        // Wait a bit more and check again
+                        const suggestions = container.querySelectorAll('li, .city-option, .suggestion, a, div');
                         const validSuggestions = Array.from(suggestions).filter(s => 
                             s.offsetHeight > 0 && s.textContent.trim().length > 0
                         );
                         
                         return {{
-                            success: false,
-                            error: 'Autocomplete detection failed',
-                            containerVisible: container.style.display !== 'none',
+                            success: validSuggestions.length > 0,
                             suggestionCount: validSuggestions.length,
                             suggestions: validSuggestions.slice(0, 5).map(s => s.textContent.trim())
                         }};
                     }}
                 """)
                 
-                # If suggestions are found in fallback, force run the selection logic
-                if final_attempt.get('suggestionCount', 0) > 0:
-                    self.logger.info(f"         Fallback detected {final_attempt.get('suggestionCount')} suggestions, attempting selection...")
-                    good_suggestions_found = True  # Force run the selection logic
+                if fallback_result.get('success') and fallback_result.get('suggestionCount', 0) > 0:
+                    self.logger.info(f"         Fallback found {fallback_result.get('suggestionCount')} suggestions, retrying selection...")
                     
-                    # City variations for matching  
+                    # Retry the city matching with the same algorithm
                     city_variations = [city_name, city_name.lower(), city_name.upper(), city_name.title()]
                     
-                    # Special handling for Delhi (it appears as "New Delhi" some times in autocomplete)
+                    # Special handling for common cities
                     if city_name.lower() == 'delhi':
                         city_variations.extend(['new delhi', 'New Delhi', 'NEW DELHI'])
+                    elif city_name.lower() == 'goa':
+                        city_variations.extend(['goa', 'GOA', 'Goa'])
                     
-                    # Special handling for Goa (to improve matching for short city names)
-                    if city_name.lower() == 'goa':
-                        city_variations.extend(['goa', 'GOA', 'Goa'])  # Ensure exact case variations
-                    
-                    # Run the same selection logic as the main path
-                    selection_result = page.evaluate(f"""
+                    # Try the selection one more time
+                    page.wait_for_timeout(500)
+                    fallback_selection = page.evaluate(f"""
                         () => {{
                             const cityVariations = {city_variations};
+                            const container = document.querySelector('{autocomplete_container}');
+                            if (!container) return {{success: false, error: 'Container not found'}};
                             
-                            // Try different selectors to find autocomplete container
-                            let container = null;
-                            const selectors = ['{autocomplete_container}', '.autocomplete', '[role="listbox"]', '.suggestions', '.dropdown-menu'];
+                            const suggestions = container.querySelectorAll('li, .city-option, .suggestion, a, div');
+                            const validSuggestions = Array.from(suggestions).filter(s => 
+                                s.offsetHeight > 0 && s.textContent.trim().length > 0
+                            );
                             
-                            for (let selector of selectors) {{
-                                container = document.querySelector(selector);
-                                if (container) break;
-                            }}
-                            
-                            if (!container) {{
-                                return {{success: false, error: 'No autocomplete container found with any selector'}};
-                            }}
-                            
-                            // Try different element selectors within the container
-                            let validSuggestions = [];
-                            const elementSelectors = [
-                                'li, .city-option, .suggestion, a',
-                                '[role="option"]',
-                                'li',
-                                'div',
-                                '*'
-                            ];
-                            
-                            for (let selector of elementSelectors) {{
-                                const suggestions = container.querySelectorAll(selector);
-                                validSuggestions = Array.from(suggestions).filter(s => 
-                                    s.offsetHeight > 0 && 
-                                    s.textContent.trim().length > 0 && 
-                                    !s.getAttribute('aria-hidden')
-                                );
-                                if (validSuggestions.length > 0) break;
-                            }}
-                            
-                            if (validSuggestions.length === 0) {{
-                                return {{
-                                    success: false, 
-                                    error: 'No valid suggestions found in container',
-                                    containerFound: !!container,
-                                    containerHTML: container ? container.outerHTML.substring(0, 500) : null
-                                }};
-                            }}
-                            
-                            // Universal city matching algorithm  
                             let bestMatch = null;
                             let bestScore = 0;
-                            let matchDetails = [];
                             
                             for (let item of validSuggestions) {{
                                 const itemText = item.textContent.trim();
@@ -645,66 +549,23 @@ class PureUIFilterEngine:
                                 
                                 for (let variation of cityVariations) {{
                                     let score = 0;
-                                    let matchType = '';
-                                    
                                     const suggestionLower = cityInSuggestion.toLowerCase();
                                     const variationLower = variation.toLowerCase();
                                     
                                     if (suggestionLower === variationLower) {{
                                         score = 1000;
-                                        matchType = 'exact_match';
-                                    }} else if (suggestionLower.startsWith(variationLower) && variationLower.length >= 2) {{
+                                    }} else if (suggestionLower.startsWith(variationLower)) {{
                                         score = 900;
-                                        matchType = 'starts_with';
-                                    }} else if (variationLower.startsWith(suggestionLower) && suggestionLower.length >= 2) {{
-                                        score = 850;
-                                        matchType = 'partial_match';
-                                    }} else if (suggestionLower.includes(variationLower) && variationLower.length >= 2) {{
+                                    }} else if (suggestionLower.includes(variationLower)) {{
                                         score = 700;
-                                        matchType = 'contains_match';
-                                    }} else if (variationLower.includes(suggestionLower) && suggestionLower.length >= 2) {{
-                                        score = 650;
-                                        matchType = 'reverse_contains';
                                     }}
                                     
-                                    if (score > 0) {{
-                                        matchDetails.push({{
-                                            suggestion: itemText,
-                                            cityPart: cityInSuggestion,
-                                            variation: variation,
-                                            score: score,
-                                            type: matchType
-                                        }});
-                                        
-                                        if (score > bestScore) {{
-                                            bestScore = score;
-                                            bestMatch = {{
-                                                element: item, 
-                                                text: itemText, 
-                                                score: score, 
-                                                type: matchType,
-                                                cityPart: cityInSuggestion,
-                                                variation: variation
-                                            }};
-                                        }}
+                                    if (score > bestScore) {{
+                                        bestScore = score;
+                                        bestMatch = {{element: item, text: itemText, score: score}};
                                     }}
                                 }}
                             }}
-                            
-                            // Return detailed debug info regardless of success/failure
-                            const debugInfo = {{
-                                totalSuggestions: validSuggestions.length,
-                                allSuggestions: validSuggestions.map(s => s.textContent.trim()),
-                                cityVariations: cityVariations,
-                                matchDetails: matchDetails,
-                                bestScore: bestScore,
-                                bestMatch: bestMatch ? {{
-                                    text: bestMatch.text,
-                                    score: bestMatch.score,
-                                    type: bestMatch.type,
-                                    cityPart: bestMatch.cityPart
-                                }} : null
-                            }};
                             
                             if (bestMatch && bestScore >= 300) {{
                                 try {{
@@ -712,47 +573,24 @@ class PureUIFilterEngine:
                                     return {{
                                         success: true,
                                         selectedText: bestMatch.text,
-                                        matchScore: bestScore,
-                                        matchType: bestMatch.type,
-                                        debug: debugInfo
+                                        matchScore: bestScore
                                     }};
                                 }} catch(e) {{
-                                    return {{
-                                        success: false, 
-                                        error: 'Click failed: ' + e.message, 
-                                        debug: debugInfo
-                                    }};
+                                    return {{success: false, error: 'Click failed: ' + e.message}};
                                 }}
                             }}
                             
-                            return {{
-                                success: false, 
-                                error: 'No confident match found (threshold=300)', 
-                                debug: debugInfo
-                            }};
+                            return {{success: false, error: 'No good match found', bestScore: bestScore}};
                         }}
                     """)
                     
-                    # Process the selection result
-                    if selection_result.get('success'):
-                        selected_text = selection_result.get('selectedText', '')
-                        match_score = selection_result.get('matchScore', 0)
-                        match_type = selection_result.get('matchType', 'fallback')
+                    if fallback_selection.get('success'):
+                        selected_text = fallback_selection.get('selectedText', '')
+                        match_score = fallback_selection.get('matchScore', 0)
                         
-                        # Extract airport code from selected text
                         airport_code = self._extract_airport_code(selected_text)
-                        if airport_code:
-                            # Store the airport code for later use
-                            if field_type.lower() == 'from':
-                                self.selected_airport_codes['from_airport_code'] = airport_code
-                            elif field_type.lower() == 'to':
-                                self.selected_airport_codes['to_airport_code'] = airport_code
-                            
-                            self.logger.info(f"         {field_type.upper()} city selected via fallback: {selected_text} "
-                                           f"(Score: {match_score}, Type: {match_type}, Airport: {airport_code})")
-                        else:
-                            self.logger.info(f"         {field_type.upper()} city selected via fallback: {selected_text} "
-                                           f"(Score: {match_score}, Type: {match_type}, Airport: N/A)")
+                        self.logger.info(f"         {field_type.upper()} city selected via fallback: {selected_text} "
+                                       f"(Score: {match_score}, Airport: {airport_code or 'N/A'})")
                         
                         # Verify selection
                         page.wait_for_timeout(800)
@@ -760,8 +598,10 @@ class PureUIFilterEngine:
                         if final_value and final_value.strip():
                             self.logger.info(f"         Final {field_type.upper()} value: {final_value}")
                             return True
-                
-                self.logger.info(f"         Autocomplete debug info: {final_attempt}")
+                    else:
+                        self.logger.warning(f"         Fallback selection also failed: {fallback_selection.get('error', 'Unknown')}")
+                else:
+                    self.logger.warning(f"         No suggestions found in fallback either: {fallback_result.get('suggestions', [])}")
                     
             self.logger.error(f"         {field_type.upper()} city selection failed for '{city_name}'")
             return False
@@ -826,7 +666,7 @@ class PureUIFilterEngine:
             
             # 1️ FIRST: Apply stops filter and wait for completion
             self.logger.info(f"   1. Applying Stops Filter...")
-            filter_success = self._test_stops_ui_filter_corrected(page, config.stops_filter)
+            filter_success = self._test_stops_ui_filter(page, config.stops_filter)
             if not filter_success:
                 self.logger.warning(f"         Stops filter may not have applied correctly")
             else:
@@ -849,7 +689,7 @@ class PureUIFilterEngine:
         except Exception as e:
             self.logger.error(f"    UI Filter Error: {e}")
 
-    def _test_stops_ui_filter_corrected(self, page: Page, stops_filter: str):
+    def _test_stops_ui_filter(self, page: Page, stops_filter: str):
         """ FINAL SOLUTION: Simple Direct Checkbox Clicking (No function dependencies)"""
         try:
             self.logger.info(f"       Testing Stops UI Filter: {stops_filter}")
@@ -1020,25 +860,11 @@ class PureUIFilterEngine:
                             amountInput.val(`₹${{targetMin.toLocaleString()}} - ₹${{targetMax.toLocaleString()}}`);
                         }}
                         
-                        // STEP 5:  CRITICAL - Update AngularJS scope variables for price filtering
-                        // Set scope variables that control price filtering
-                        if (typeof scope.minPriceFilter !== 'undefined') {{
-                            scope.minPriceFilter = targetMin;
-                        }} else {{
-                            scope.minPriceFilter = targetMin;
-                        }}
-                        
-                        if (typeof scope.maxPriceFilter !== 'undefined') {{
-                            scope.maxPriceFilter = targetMax;
-                        }} else {{
-                            scope.maxPriceFilter = targetMax;
-                        }}
-                        
-                        // Set additional potential scope variables
+                        // STEP 5: Update AngularJS scope variables for price filtering
+                        scope.minPriceFilter = targetMin;
+                        scope.maxPriceFilter = targetMax;
                         scope.priceMin = targetMin;
                         scope.priceMax = targetMax;
-                        scope.sliderPriceMin = targetMin;
-                        scope.sliderPriceMax = targetMax;
                         
                         // STEP 6:  TRIGGER ANGULAR DIGEST CYCLE
                         scope.$apply();
@@ -1069,57 +895,25 @@ class PureUIFilterEngine:
                             }}
                         }});
                         
-                        // STEP 8:  TRIGGER THE CUSTOM DIRECTIVE
-                        // Force the data-my-repeats-filters-dom-directive to re-evaluate
-                        const directiveElements = document.querySelectorAll('[data-my-repeats-filters-dom-directive]');
-                        directiveElements.forEach(element => {{
-                            // Trigger custom events that the directive might listen to
-                            element.dispatchEvent(new CustomEvent('priceFilterChanged', {{
-                                detail: {{ min: targetMin, max: targetMax }}
-                            }}));
-                        }});
-                        
-                        // STEP 9:  COMPREHENSIVE FUNCTION CALLING
-                        let functionResults = {{}};
-                        
-                        // Call discovered filter functions with proper parameters
-                        const filterFunctions = [
-                            'filterSlide', 'filterSlide1', 'initializeRangeSlider',
-                            'clearSliderIntBound', 'clearSliderOutBound'
-                        ];
-                        
-                        filterFunctions.forEach(funcName => {{
-                            if (typeof window[funcName] === 'function') {{
-                                try {{
-                                    window[funcName]();
-                                    functionResults[funcName] = 'called successfully';
-                                }} catch(e) {{
-                                    functionResults[funcName] = 'error: ' + e.message;
-                                }}
+                        // STEP 8: Trigger main filter function
+                        if (typeof window.filterSlide === 'function') {{
+                            try {{
+                                window.filterSlide();
+                            }} catch(e) {{
+                                console.log('filterSlide error:', e.message);
                             }}
-                        }});
+                        }}
                         
-                        // STEP 10:  FINAL ANGULAR SCOPE UPDATE
+                        // STEP 9: Final Angular update
                         scope.$digest();
                         
                         return {{
                             success: true,
-                            sliderMin: sliderMin,
-                            sliderMax: sliderMax,
                             targetMin: targetMin,
                             targetMax: targetMax,
-                            currentValues: slider.slider('values'),
-                            amountDisplay: amountInput.length ? amountInput.val() : 'not found',
-                            functionResults: functionResults,
-                            scopeUpdated: true,
                             totalFlights: flightElements.length,
                             visibleFlights: visibleCount,
-                            hiddenFlights: hiddenCount,
-                            priceRange: {{
-                                min: Math.min(...flightPrices),
-                                max: Math.max(...flightPrices)
-                            }},
-                            samplePrices: flightPrices.slice(0, 10)
+                            hiddenFlights: hiddenCount
                         }};
                         
                     }} catch(e) {{
@@ -1279,9 +1073,16 @@ class PureUIFilterEngine:
                                     }}
                                 }}
                                 
-                                // Extract airport codes from class instance 
-                                const fromCode = '{self.selected_airport_codes["from_airport_code"]}' || 'N/A';
-                                const toCode = '{self.selected_airport_codes["to_airport_code"]}' || 'N/A';
+                                // Extract airport codes from URL or page context
+                                let fromCode = 'N/A';
+                                let toCode = 'N/A';
+                                
+                                // Try to extract from URL
+                                const url = window.location.href;
+                                const fromMatch = url.match(/[?&]from=([A-Z]{3})/);
+                                const toMatch = url.match(/[?&]to=([A-Z]{3})/);
+                                if (fromMatch) fromCode = fromMatch[1];
+                                if (toMatch) toCode = toMatch[1];
                                 
                                 // Extract flight number/code
                                 let flightNumber = 'N/A';
@@ -1358,41 +1159,9 @@ class PureUIFilterEngine:
             
             self.logger.info(f"         Flights matching BOTH conditions: {len(ui_flights)}")
             
-            # Debug: Log details of extracted flights
+            # Log results summary
             if len(ui_flights) == 0:
-                self.logger.warning(f"         No flights extracted - debugging flight visibility...")
-                
-                # Check what's actually visible
-                debug_info = page.evaluate("""
-                    () => {
-                        const allFlights = document.querySelectorAll('.fltResult');
-                        const visibleCount = Array.from(allFlights).filter(el => {
-                            const rect = el.getBoundingClientRect();
-                            const computedStyle = window.getComputedStyle(el);
-                            return el.offsetParent !== null && 
-                                   el.style.display !== 'none' &&
-                                   computedStyle.display !== 'none' &&
-                                   computedStyle.visibility !== 'hidden' &&
-                                   !el.hidden &&
-                                   rect.height > 0 &&
-                                   rect.width > 0;
-                        }).length;
-                        
-                        const withAttributes = Array.from(allFlights).filter(el => 
-                            el.getAttribute('price') && el.getAttribute('stop')
-                        ).length;
-                        
-                        return {
-                            totalFlights: allFlights.length,
-                            visibleFlights: visibleCount,
-                            withAttributes: withAttributes
-                        };
-                    }
-                """)
-                
-                self.logger.info(f"         Debug: Total={debug_info.get('totalFlights')}, "
-                               f"Visible={debug_info.get('visibleFlights')}, "
-                               f"WithAttributes={debug_info.get('withAttributes')}")
+                self.logger.warning(f"         No flights matched both filter conditions")
             else:
                 # Log sample of extracted flights
                 for i, flight in enumerate(ui_flights[:3]):
