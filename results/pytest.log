@@ -1,80 +1,78 @@
-2025-08-21 18:45:35 [    INFO] conftest.py:35: ================================================================================
-2025-08-21 18:45:35 [    INFO] conftest.py:36:  PYTEST SESSION STARTED - EaseMyTrip Automation
-2025-08-21 18:45:35 [    INFO] conftest.py:37:  Framework: Pytest + Playwright + PyCharm Compatible
-2025-08-21 18:45:35 [    INFO] conftest.py:38: ================================================================================
-2025-08-21 18:45:35 [    INFO] test_part1_core_automation.py:58:  PART 1: Flight Search Automation - Core Implementation (Pytest)
-2025-08-21 18:45:35 [    INFO] test_part1_core_automation.py:59:  Single test case with filters and data extraction
-2025-08-21 18:45:35 [    INFO] test_part1_core_automation.py:60: ================================================================================
-2025-08-21 18:45:35 [    INFO] test_part1_core_automation.py:65:  Part 1 Configuration:
-2025-08-21 18:45:35 [    INFO] test_part1_core_automation.py:66:    Route: Delhi → Bengaluru
-2025-08-21 18:45:35 [    INFO] test_part1_core_automation.py:67:    Date: 2025-09-01
-2025-08-21 18:45:35 [    INFO] test_part1_core_automation.py:68:    Stops Filter: Non-stop
-2025-08-21 18:45:35 [    INFO] test_part1_core_automation.py:69:    Price Range: ₹2,000-₹8,000
-2025-08-21 18:45:35 [    INFO] test_part1_core_automation.py:70: ------------------------------------------------------------
-2025-08-21 18:45:35 [   DEBUG] selector_events.py:54: Using selector: KqueueSelector
-2025-08-21 18:45:36 [    INFO] flight_filter_engine.py:57: Testing UI Filter: PART1_CORE_PYTEST
-2025-08-21 18:45:36 [    INFO] flight_filter_engine.py:58:    Description: Part 1 core automation: 1 Stop flights Delhi to Bengaluru with ₹4000-₹8000 price range
-2025-08-21 18:45:36 [    INFO] flight_filter_engine.py:59:    Route: Delhi → Bengaluru
-2025-08-21 18:45:36 [    INFO] flight_filter_engine.py:60:    Date: 2025-09-01
-2025-08-21 18:45:36 [    INFO] flight_filter_engine.py:61:    Filter Test: Non-stop + ₹2,000-₹8,000
-2025-08-21 18:45:43 [    INFO] flight_filter_engine.py:106:      Selecting FROM city: Delhi
-2025-08-21 18:45:46 [    INFO] flight_filter_engine.py:333:             Found 4 suggestions after typing 'Delh'
-2025-08-21 18:45:47 [    INFO] flight_filter_engine.py:451:          FROM city selected: New Delhi(DEL)Indira Gandhi International Airport India Nearby Airport Found (Score: 1000, Type: exact_match, Airport: DEL)
-2025-08-21 18:45:48 [    INFO] flight_filter_engine.py:461:          Final FROM value: New Delhi
-2025-08-21 18:45:48 [    INFO] flight_filter_engine.py:109:      Selecting TO city: Bengaluru
-2025-08-21 18:45:50 [    INFO] flight_filter_engine.py:333:             Found 9 suggestions after typing 'Beng'
-2025-08-21 18:45:51 [    INFO] flight_filter_engine.py:451:          TO city selected: Bengaluru(BLR)Kempegowda International Airport India Nearby Airport Found (Score: 1000, Type: exact_match, Airport: BLR)
-2025-08-21 18:45:52 [    INFO] flight_filter_engine.py:461:          Final TO value: Bengaluru
-2025-08-21 18:45:53 [    INFO] flight_filter_engine.py:116:      Verified: New Delhi → Bengaluru
-2025-08-21 18:45:53 [    INFO] flight_filter_engine.py:123:       Setting departure date: 2025-09-01
-2025-08-21 18:45:55 [    INFO] flight_filter_engine.py:153:          Setting date using optimized strategy...
-2025-08-21 18:45:55 [    INFO] flight_filter_engine.py:155:          Date field clicked successfully
-2025-08-21 18:45:57 [    INFO] flight_filter_engine.py:175:          Date set successfully: 01/09/2025
-2025-08-21 18:45:58 [    INFO] flight_filter_engine.py:200:     Search button clicked successfully
-2025-08-21 18:46:13 [    INFO] flight_filter_engine.py:237:     Successfully navigated to results page
-2025-08-21 18:46:13 [    INFO] flight_filter_engine.py:250:     Search successful - reached results page
-2025-08-21 18:46:13 [    INFO] flight_filter_engine.py:69:    BEFORE filtering: 181 flights visible
-2025-08-21 18:46:13 [    INFO] flight_filter_engine.py:568:      Testing UI Filters...
-2025-08-21 18:46:18 [    INFO] flight_filter_engine.py:574:    1. Applying Stops Filter...
-2025-08-21 18:46:18 [    INFO] flight_filter_engine.py:601:        Testing Stops UI Filter: Non-stop
-2025-08-21 18:46:18 [    INFO] flight_filter_engine.py:622:            Target checkbox: chkNonStop
-2025-08-21 18:46:18 [    INFO] flight_filter_engine.py:638:            Initial checked boxes: ['chkNonStop', 'chkOneStop', 'chkTwoStop']
-2025-08-21 18:46:20 [    INFO] flight_filter_engine.py:656:            Unchecked: chkOneStop
-2025-08-21 18:46:22 [    INFO] flight_filter_engine.py:656:            Unchecked: chkTwoStop
-2025-08-21 18:46:22 [    INFO] flight_filter_engine.py:677:            Target already checked: chkNonStop
-2025-08-21 18:46:26 [    INFO] flight_filter_engine.py:700:            Final checked boxes: ['chkNonStop']
-2025-08-21 18:46:26 [    INFO] flight_filter_engine.py:706:            SUCCESS: Only chkNonStop is checked
-2025-08-21 18:46:26 [    INFO] flight_filter_engine.py:579:         Stops filter applied successfully
-2025-08-21 18:46:26 [    INFO] flight_filter_engine.py:582:     Waiting for stops filter to complete...
-2025-08-21 18:46:32 [    INFO] flight_filter_engine.py:586:    2. Applying Price Filter...
-2025-08-21 18:46:32 [    INFO] flight_filter_engine.py:719:        Testing AngularJS Price Filter: ₹2,000-₹8,000
-2025-08-21 18:46:32 [    INFO] flight_filter_engine.py:885:           AngularJS Price Filter Applied: ₹5,057-₹8,000
-2025-08-21 18:46:32 [    INFO] flight_filter_engine.py:886:           Filtered 79 flights out of 181
-2025-08-21 18:46:32 [    INFO] flight_filter_engine.py:889:           Waiting for AngularJS filtering to complete...
-2025-08-21 18:46:42 [    INFO] flight_filter_engine.py:590:     Waiting for all filters to complete...
-2025-08-21 18:46:50 [    INFO] flight_filter_engine.py:593:     All UI Filters applied - ready for result extraction
-2025-08-21 18:46:50 [    INFO] flight_filter_engine.py:76:    AFTER UI filtering: 79 flights visible
-2025-08-21 18:46:50 [    INFO] flight_filter_engine.py:902:     Extracting flights matching BOTH filters...
-2025-08-21 18:46:50 [    INFO] flight_filter_engine.py:1105:          Flights matching BOTH conditions: 37
-2025-08-21 18:46:50 [    INFO] flight_filter_engine.py:1145:          Sample Flight 1: AkasaAir ₹6424 Non-stop
-2025-08-21 18:46:50 [    INFO] flight_filter_engine.py:1145:          Sample Flight 2: Air India ₹6680 Non-stop
-2025-08-21 18:46:50 [    INFO] flight_filter_engine.py:1145:          Sample Flight 3: Air India ₹6680 Non-stop
-2025-08-21 18:46:50 [    INFO] flight_filter_engine.py:81:    UI Filter Applied - 37 flights extracted
-2025-08-21 18:46:50 [    INFO] test_part1_core_automation.py:100:   Success: Found 181 flights for your search
-2025-08-21 18:46:50 [    INFO] test_part1_core_automation.py:103:  Filter Status: PASSED
-2025-08-21 18:46:50 [    INFO] test_part1_core_automation.py:156:  Extracting and consolidating flight data...
-2025-08-21 18:46:50 [    INFO] test_part1_core_automation.py:217:  Consolidation complete: 37 flights meet all criteria
-2025-08-21 18:46:50 [    INFO] test_part1_core_automation.py:218:  Airlines found: SpiceJet, Air India, Air India Express, IndiGo, AkasaAir
-2025-08-21 18:46:50 [    INFO] test_part1_core_automation.py:219:  Price range: ₹6,424 - ₹7,900
-2025-08-21 18:46:50 [    INFO] test_part1_core_automation.py:241:  Saving data to Excel file (Part 1 Assignment Format)
-2025-08-21 18:46:50 [    INFO] test_part1_core_automation.py:363:  Excel file saved successfully: Part1_Core_Automation_Pytest_Results_20250821_184650.xlsx
-2025-08-21 18:46:50 [    INFO] test_part1_core_automation.py:364:  Data format: Assignment compliant (Airline Name, Price, Airport Codes)
-2025-08-21 18:46:50 [    INFO] test_part1_core_automation.py:365:  Consolidation: Grouped by airline, sorted by price
-2025-08-21 18:46:50 [    INFO] test_part1_core_automation.py:130:  SUCCESS: PART 1 AUTOMATION COMPLETED SUCCESSFULLY!
-2025-08-21 18:46:50 [    INFO] test_part1_core_automation.py:131:  Total flights found: 181
-2025-08-21 18:46:50 [    INFO] test_part1_core_automation.py:132:  Filtered flights (meeting criteria): 37
-2025-08-21 18:46:50 [    INFO] test_part1_core_automation.py:133:  Excel report: Part1_Core_Automation_Pytest_Results_20250821_184650.xlsx
-2025-08-21 18:46:50 [    INFO] test_part1_core_automation.py:138:  Airlines found: 5
-2025-08-21 18:46:50 [    INFO] test_part1_core_automation.py:139:  Price range found: ₹6,424 - ₹7,900
-2025-08-21 18:46:50 [    INFO] test_part1_core_automation.py:150:  PART 1 PYTEST TEST COMPLETED SUCCESSFULLY!
-2025-08-21 18:46:50 [    INFO] test_part1_core_automation.py:151: ================================================================================
+2025-08-22 16:21:22 [    INFO] conftest.py:35: ================================================================================
+2025-08-22 16:21:22 [    INFO] conftest.py:36:  PYTEST SESSION STARTED - EaseMyTrip Automation
+2025-08-22 16:21:22 [    INFO] conftest.py:37: ================================================================================
+2025-08-22 16:21:22 [    INFO] test_part1_core_automation.py:58:  PART 1: Flight Search Automation - Core Implementation (Pytest)
+2025-08-22 16:21:22 [    INFO] test_part1_core_automation.py:59:  Single test case with filters and data extraction
+2025-08-22 16:21:22 [    INFO] test_part1_core_automation.py:60: ================================================================================
+2025-08-22 16:21:22 [    INFO] test_part1_core_automation.py:65:  Part 1 Configuration:
+2025-08-22 16:21:22 [    INFO] test_part1_core_automation.py:66:    Route: Ahmedabad -> Goa
+2025-08-22 16:21:22 [    INFO] test_part1_core_automation.py:67:    Date: 2025-09-01
+2025-08-22 16:21:22 [    INFO] test_part1_core_automation.py:68:    Stops Filter: Non-stop
+2025-08-22 16:21:22 [    INFO] test_part1_core_automation.py:69:    Price Range: ₹2,000 - ₹8,000
+2025-08-22 16:21:22 [    INFO] test_part1_core_automation.py:70: ------------------------------------------------------------
+2025-08-22 16:21:22 [   DEBUG] selector_events.py:64: Using selector: KqueueSelector
+2025-08-22 16:21:23 [    INFO] flight_filter_engine.py:57: Testing UI Filter: PART1_CORE_PYTEST
+2025-08-22 16:21:23 [    INFO] flight_filter_engine.py:58:    Description: Part 1 core automation: 1 Stop flights Delhi to Bengaluru with ₹4000-₹8000 price range
+2025-08-22 16:21:23 [    INFO] flight_filter_engine.py:59:    Route: Ahmedabad → Goa
+2025-08-22 16:21:23 [    INFO] flight_filter_engine.py:60:    Date: 2025-09-01
+2025-08-22 16:21:23 [    INFO] flight_filter_engine.py:61:    Filter Test: Non-stop + ₹2,000-₹8,000
+2025-08-22 16:21:30 [    INFO] flight_filter_engine.py:106:      Selecting FROM city: Ahmedabad
+2025-08-22 16:21:33 [    INFO] flight_filter_engine.py:337:             Found 3 suggestions after typing 'Ahme'
+2025-08-22 16:21:34 [    INFO] flight_filter_engine.py:515:          FROM city selected: Ahmedabad(AMD)Sardar Vallabhbhai Patel International Airport India Nearby Airport Found (Score: 1000, Type: exact_match, Airport: AMD)
+2025-08-22 16:21:35 [    INFO] flight_filter_engine.py:525:          Final FROM value: Ahmedabad
+2025-08-22 16:21:35 [    INFO] flight_filter_engine.py:109:      Selecting TO city: Goa
+2025-08-22 16:21:37 [   ERROR] flight_filter_engine.py:551:          TO autocomplete suggestions not detected for 'Goa'
+2025-08-22 16:21:37 [    INFO] flight_filter_engine.py:576:          Fallback detected 8 suggestions, attempting selection...
+2025-08-22 16:21:37 [    INFO] flight_filter_engine.py:751:          TO city selected via fallback: Goa(GOI)Dabolim Goa International Airport India Nearby Airport Found (Score: 1000, Type: exact_match, Airport: GOI)
+2025-08-22 16:21:38 [    INFO] flight_filter_engine.py:761:          Final TO value: Goa
+2025-08-22 16:21:39 [    INFO] flight_filter_engine.py:116:      Verified: Ahmedabad → Goa
+2025-08-22 16:21:39 [    INFO] flight_filter_engine.py:123:       Setting departure date: 2025-09-01
+2025-08-22 16:21:41 [    INFO] flight_filter_engine.py:153:          Setting date using optimized strategy...
+2025-08-22 16:21:41 [    INFO] flight_filter_engine.py:155:          Date field clicked successfully
+2025-08-22 16:21:43 [    INFO] flight_filter_engine.py:175:          Date set successfully: 01/09/2025
+2025-08-22 16:21:44 [    INFO] flight_filter_engine.py:200:     Search button clicked successfully
+2025-08-22 16:21:59 [    INFO] flight_filter_engine.py:237:     Successfully navigated to results page
+2025-08-22 16:21:59 [    INFO] flight_filter_engine.py:252:     Search successful - reached results page
+2025-08-22 16:21:59 [    INFO] flight_filter_engine.py:69:    BEFORE filtering: 60 flights visible
+2025-08-22 16:21:59 [    INFO] flight_filter_engine.py:822:      Testing UI Filters...
+2025-08-22 16:22:04 [    INFO] flight_filter_engine.py:828:    1. Applying Stops Filter...
+2025-08-22 16:22:04 [    INFO] flight_filter_engine.py:855:        Testing Stops UI Filter: Non-stop
+2025-08-22 16:22:04 [    INFO] flight_filter_engine.py:876:            Target checkbox: chkNonStop
+2025-08-22 16:22:04 [    INFO] flight_filter_engine.py:892:            Initial checked boxes: ['chkNonStop', 'chkOneStop', 'chkTwoStop']
+2025-08-22 16:22:06 [    INFO] flight_filter_engine.py:910:            Unchecked: chkOneStop
+2025-08-22 16:22:07 [    INFO] flight_filter_engine.py:910:            Unchecked: chkTwoStop
+2025-08-22 16:22:07 [    INFO] flight_filter_engine.py:931:            Target already checked: chkNonStop
+2025-08-22 16:22:11 [    INFO] flight_filter_engine.py:954:            Final checked boxes: ['chkNonStop']
+2025-08-22 16:22:11 [    INFO] flight_filter_engine.py:960:            SUCCESS: Only chkNonStop is checked
+2025-08-22 16:22:11 [    INFO] flight_filter_engine.py:833:         Stops filter applied successfully
+2025-08-22 16:22:11 [    INFO] flight_filter_engine.py:836:     Waiting for stops filter to complete...
+2025-08-22 16:22:17 [    INFO] flight_filter_engine.py:840:    2. Applying Price Filter...
+2025-08-22 16:22:17 [    INFO] flight_filter_engine.py:973:        Testing AngularJS Price Filter: ₹2,000-₹8,000
+2025-08-22 16:22:17 [    INFO] flight_filter_engine.py:1139:           AngularJS Price Filter Applied: ₹3,840-₹8,000
+2025-08-22 16:22:17 [    INFO] flight_filter_engine.py:1140:           Filtered 51 flights out of 60
+2025-08-22 16:22:17 [    INFO] flight_filter_engine.py:1143:           Waiting for AngularJS filtering to complete...
+2025-08-22 16:22:27 [    INFO] flight_filter_engine.py:844:     Waiting for all filters to complete...
+2025-08-22 16:22:35 [    INFO] flight_filter_engine.py:847:     All UI Filters applied - ready for result extraction
+2025-08-22 16:22:35 [    INFO] flight_filter_engine.py:76:    AFTER UI filtering: 51 flights visible
+2025-08-22 16:22:35 [    INFO] flight_filter_engine.py:1156:     Extracting flights matching BOTH filters...
+2025-08-22 16:22:35 [    INFO] flight_filter_engine.py:1359:          Flights matching BOTH conditions: 2
+2025-08-22 16:22:35 [    INFO] flight_filter_engine.py:1399:          Sample Flight 1: IndiGo ₹3840 Non-stop
+2025-08-22 16:22:35 [    INFO] flight_filter_engine.py:1399:          Sample Flight 2: IndiGo ₹5448 Non-stop
+2025-08-22 16:22:35 [    INFO] flight_filter_engine.py:81:    UI Filter Applied - 2 flights extracted
+2025-08-22 16:22:35 [    INFO] test_part1_core_automation.py:100:   Success: Found 60 flights for your search
+2025-08-22 16:22:35 [    INFO] test_part1_core_automation.py:103:  Filter Status: PASSED
+2025-08-22 16:22:35 [    INFO] test_part1_core_automation.py:156:  Extracting and consolidating flight data...
+2025-08-22 16:22:35 [    INFO] test_part1_core_automation.py:217:  Consolidation complete: 2 flights meet all criteria
+2025-08-22 16:22:35 [    INFO] test_part1_core_automation.py:218:  Airlines found: IndiGo
+2025-08-22 16:22:35 [    INFO] test_part1_core_automation.py:219:  Price range: ₹3,840 - ₹5,448
+2025-08-22 16:22:35 [    INFO] test_part1_core_automation.py:241:  Saving data to Excel file 
+2025-08-22 16:22:35 [    INFO] test_part1_core_automation.py:362:  Excel file saved successfully: Part1_Core_Automation_Pytest_Results_20250822_162235.xlsx
+2025-08-22 16:22:35 [    INFO] test_part1_core_automation.py:363:  Data format: Assignment compliant (Airline Name, Price, Airport Codes)
+2025-08-22 16:22:35 [    INFO] test_part1_core_automation.py:364:  Consolidation: Grouped by airline, sorted by price
+2025-08-22 16:22:35 [    INFO] test_part1_core_automation.py:130:  SUCCESS: PART 1 AUTOMATION COMPLETED SUCCESSFULLY!
+2025-08-22 16:22:35 [    INFO] test_part1_core_automation.py:131:  Total flights found: 60
+2025-08-22 16:22:35 [    INFO] test_part1_core_automation.py:132:  Filtered flights (meeting criteria): 2
+2025-08-22 16:22:36 [    INFO] test_part1_core_automation.py:133:  Excel report: Part1_Core_Automation_Pytest_Results_20250822_162235.xlsx
+2025-08-22 16:22:36 [    INFO] test_part1_core_automation.py:138:  Airlines found: 1
+2025-08-22 16:22:36 [    INFO] test_part1_core_automation.py:139:  Price range found: ₹3,840 - ₹5,448
+2025-08-22 16:22:36 [    INFO] test_part1_core_automation.py:150:  PART 1 PYTEST TEST COMPLETED SUCCESSFULLY!

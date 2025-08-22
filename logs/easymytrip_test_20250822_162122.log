@@ -1,0 +1,77 @@
+2025-08-22 16:21:22 - INFO - ================================================================================
+2025-08-22 16:21:22 - INFO -  PYTEST SESSION STARTED - EaseMyTrip Automation
+2025-08-22 16:21:22 - INFO - ================================================================================
+2025-08-22 16:21:22 - INFO -  PART 1: Flight Search Automation - Core Implementation (Pytest)
+2025-08-22 16:21:22 - INFO -  Single test case with filters and data extraction
+2025-08-22 16:21:22 - INFO - ================================================================================
+2025-08-22 16:21:22 - INFO -  Part 1 Configuration:
+2025-08-22 16:21:22 - INFO -    Route: Ahmedabad -> Goa
+2025-08-22 16:21:22 - INFO -    Date: 2025-09-01
+2025-08-22 16:21:22 - INFO -    Stops Filter: Non-stop
+2025-08-22 16:21:22 - INFO -    Price Range: ₹2,000 - ₹8,000
+2025-08-22 16:21:22 - INFO - ------------------------------------------------------------
+2025-08-22 16:21:23 - INFO - Testing UI Filter: PART1_CORE_PYTEST
+2025-08-22 16:21:23 - INFO -    Description: Part 1 core automation: 1 Stop flights Delhi to Bengaluru with ₹4000-₹8000 price range
+2025-08-22 16:21:23 - INFO -    Route: Ahmedabad → Goa
+2025-08-22 16:21:23 - INFO -    Date: 2025-09-01
+2025-08-22 16:21:23 - INFO -    Filter Test: Non-stop + ₹2,000-₹8,000
+2025-08-22 16:21:30 - INFO -      Selecting FROM city: Ahmedabad
+2025-08-22 16:21:33 - INFO -             Found 3 suggestions after typing 'Ahme'
+2025-08-22 16:21:34 - INFO -          FROM city selected: Ahmedabad(AMD)Sardar Vallabhbhai Patel International Airport India Nearby Airport Found (Score: 1000, Type: exact_match, Airport: AMD)
+2025-08-22 16:21:35 - INFO -          Final FROM value: Ahmedabad
+2025-08-22 16:21:35 - INFO -      Selecting TO city: Goa
+2025-08-22 16:21:37 - ERROR -          TO autocomplete suggestions not detected for 'Goa'
+2025-08-22 16:21:37 - INFO -          Fallback detected 8 suggestions, attempting selection...
+2025-08-22 16:21:37 - INFO -          TO city selected via fallback: Goa(GOI)Dabolim Goa International Airport India Nearby Airport Found (Score: 1000, Type: exact_match, Airport: GOI)
+2025-08-22 16:21:38 - INFO -          Final TO value: Goa
+2025-08-22 16:21:39 - INFO -      Verified: Ahmedabad → Goa
+2025-08-22 16:21:39 - INFO -       Setting departure date: 2025-09-01
+2025-08-22 16:21:41 - INFO -          Setting date using optimized strategy...
+2025-08-22 16:21:41 - INFO -          Date field clicked successfully
+2025-08-22 16:21:43 - INFO -          Date set successfully: 01/09/2025
+2025-08-22 16:21:44 - INFO -     Search button clicked successfully
+2025-08-22 16:21:59 - INFO -     Successfully navigated to results page
+2025-08-22 16:21:59 - INFO -     Search successful - reached results page
+2025-08-22 16:21:59 - INFO -    BEFORE filtering: 60 flights visible
+2025-08-22 16:21:59 - INFO -      Testing UI Filters...
+2025-08-22 16:22:04 - INFO -    1. Applying Stops Filter...
+2025-08-22 16:22:04 - INFO -        Testing Stops UI Filter: Non-stop
+2025-08-22 16:22:04 - INFO -            Target checkbox: chkNonStop
+2025-08-22 16:22:04 - INFO -            Initial checked boxes: ['chkNonStop', 'chkOneStop', 'chkTwoStop']
+2025-08-22 16:22:06 - INFO -            Unchecked: chkOneStop
+2025-08-22 16:22:07 - INFO -            Unchecked: chkTwoStop
+2025-08-22 16:22:07 - INFO -            Target already checked: chkNonStop
+2025-08-22 16:22:11 - INFO -            Final checked boxes: ['chkNonStop']
+2025-08-22 16:22:11 - INFO -            SUCCESS: Only chkNonStop is checked
+2025-08-22 16:22:11 - INFO -         Stops filter applied successfully
+2025-08-22 16:22:11 - INFO -     Waiting for stops filter to complete...
+2025-08-22 16:22:17 - INFO -    2. Applying Price Filter...
+2025-08-22 16:22:17 - INFO -        Testing AngularJS Price Filter: ₹2,000-₹8,000
+2025-08-22 16:22:17 - INFO -           AngularJS Price Filter Applied: ₹3,840-₹8,000
+2025-08-22 16:22:17 - INFO -           Filtered 51 flights out of 60
+2025-08-22 16:22:17 - INFO -           Waiting for AngularJS filtering to complete...
+2025-08-22 16:22:27 - INFO -     Waiting for all filters to complete...
+2025-08-22 16:22:35 - INFO -     All UI Filters applied - ready for result extraction
+2025-08-22 16:22:35 - INFO -    AFTER UI filtering: 51 flights visible
+2025-08-22 16:22:35 - INFO -     Extracting flights matching BOTH filters...
+2025-08-22 16:22:35 - INFO -          Flights matching BOTH conditions: 2
+2025-08-22 16:22:35 - INFO -          Sample Flight 1: IndiGo ₹3840 Non-stop
+2025-08-22 16:22:35 - INFO -          Sample Flight 2: IndiGo ₹5448 Non-stop
+2025-08-22 16:22:35 - INFO -    UI Filter Applied - 2 flights extracted
+2025-08-22 16:22:35 - INFO -   Success: Found 60 flights for your search
+2025-08-22 16:22:35 - INFO -  Filter Status: PASSED
+2025-08-22 16:22:35 - INFO -  Extracting and consolidating flight data...
+2025-08-22 16:22:35 - INFO -  Consolidation complete: 2 flights meet all criteria
+2025-08-22 16:22:35 - INFO -  Airlines found: IndiGo
+2025-08-22 16:22:35 - INFO -  Price range: ₹3,840 - ₹5,448
+2025-08-22 16:22:35 - INFO -  Saving data to Excel file 
+2025-08-22 16:22:35 - INFO -  Excel file saved successfully: Part1_Core_Automation_Pytest_Results_20250822_162235.xlsx
+2025-08-22 16:22:35 - INFO -  Data format: Assignment compliant (Airline Name, Price, Airport Codes)
+2025-08-22 16:22:35 - INFO -  Consolidation: Grouped by airline, sorted by price
+2025-08-22 16:22:35 - INFO -  SUCCESS: PART 1 AUTOMATION COMPLETED SUCCESSFULLY!
+2025-08-22 16:22:35 - INFO -  Total flights found: 60
+2025-08-22 16:22:35 - INFO -  Filtered flights (meeting criteria): 2
+2025-08-22 16:22:36 - INFO -  Excel report: Part1_Core_Automation_Pytest_Results_20250822_162235.xlsx
+2025-08-22 16:22:36 - INFO -  Airlines found: 1
+2025-08-22 16:22:36 - INFO -  Price range found: ₹3,840 - ₹5,448
+2025-08-22 16:22:36 - INFO -  PART 1 PYTEST TEST COMPLETED SUCCESSFULLY!

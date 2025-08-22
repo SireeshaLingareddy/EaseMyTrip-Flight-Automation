@@ -69,8 +69,8 @@ def part1_hardcoded_config():
     return TestConfig(
         test_id="PART1_CORE_PYTEST",
         description="Part 1 core automation: 1 Stop flights Delhi to Bengaluru with ₹4000-₹8000 price range",
-        from_city="Delhi",
-        to_city="Bengaluru",
+        from_city="Ahmedabad",
+        to_city="Goa",
         departure_date="2025-09-01",
         stops_filter="Non-stop",
         price_min=2000,
