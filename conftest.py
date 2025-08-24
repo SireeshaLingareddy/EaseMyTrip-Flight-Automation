@@ -71,10 +71,10 @@ def part1_hardcoded_config():
         description="Part 1 core automation: 1 Stop flights Delhi to Bengaluru with ₹4000-₹8000 price range",
         from_city="Ahmedabad",
         to_city="Goa",
-        departure_date="2025-09-01",
-        stops_filter="Non-stop",
+        departure_date="2025-12-01",
+        stops_filter="1 Stop",
         price_min=2000,
-        price_max=4000
+        price_max=6000
     )
 
 
