@@ -1,0 +1,67 @@
+2025-08-25 01:53:18 [    INFO] conftest.py:35: ================================================================================
+2025-08-25 01:53:18 [    INFO] conftest.py:36:  PYTEST SESSION STARTED - EaseMyTrip Automation
+2025-08-25 01:53:18 [    INFO] conftest.py:37: ================================================================================
+2025-08-25 01:53:18 [    INFO] test_part1_core_automation.py:58:  PART 1: Flight Search Automation - Core Implementation (Pytest)
+2025-08-25 01:53:18 [    INFO] test_part1_core_automation.py:59:  Single test case with filters and data extraction
+2025-08-25 01:53:18 [    INFO] test_part1_core_automation.py:60: ================================================================================
+2025-08-25 01:53:18 [    INFO] test_part1_core_automation.py:65:  Part 1 Configuration:
+2025-08-25 01:53:18 [    INFO] test_part1_core_automation.py:66:    Route: Ahmedabad -> Goa
+2025-08-25 01:53:18 [    INFO] test_part1_core_automation.py:67:    Date: 2025-12-01
+2025-08-25 01:53:18 [    INFO] test_part1_core_automation.py:68:    Stops Filter: 1 Stop
+2025-08-25 01:53:18 [    INFO] test_part1_core_automation.py:69:    Price Range: ₹2,000 - ₹6,000
+2025-08-25 01:53:18 [    INFO] test_part1_core_automation.py:70: ------------------------------------------------------------
+2025-08-25 01:53:18 [   DEBUG] selector_events.py:54: Using selector: KqueueSelector
+2025-08-25 01:53:19 [    INFO] flight_filter_engine.py:39: Testing UI Filter: PART1_CORE_PYTEST
+2025-08-25 01:53:19 [    INFO] flight_filter_engine.py:40:    Description: Part 1 core automation: 1 Stop flights Delhi to Bengaluru with ₹4000-₹8000 price range
+2025-08-25 01:53:19 [    INFO] flight_filter_engine.py:41:    Route: Ahmedabad → Goa
+2025-08-25 01:53:19 [    INFO] flight_filter_engine.py:42:    Date: 2025-12-01
+2025-08-25 01:53:19 [    INFO] flight_filter_engine.py:43:    Filter Test: 1 Stop + ₹2,000-₹6,000
+2025-08-25 01:53:24 [    INFO] flight_filter_engine.py:92:      Selecting FROM city: Ahmedabad
+2025-08-25 01:53:28 [    INFO] flight_filter_engine.py:357:          FROM: Ahmedabad(AMD)Sardar Vallabhbhai Patel International Airport India Nearby Airport Found (Score: 1000, Airport: AMD)
+2025-08-25 01:53:29 [    INFO] flight_filter_engine.py:363:          FROM confirmed: Ahmedabad
+2025-08-25 01:53:29 [    INFO] flight_filter_engine.py:95:      Selecting TO city: Goa
+2025-08-25 01:53:33 [    INFO] flight_filter_engine.py:357:          TO: Goa(GOI)Dabolim Goa International Airport India Nearby Airport Found (Score: 1000, Airport: GOI)
+2025-08-25 01:53:34 [    INFO] flight_filter_engine.py:363:          TO confirmed: Goa
+2025-08-25 01:53:35 [    INFO] flight_filter_engine.py:102:      Verified: Ahmedabad → Goa
+2025-08-25 01:53:35 [    INFO] flight_filter_engine.py:109:       Setting departure date: 2025-12-01
+2025-08-25 01:53:38 [    INFO] flight_filter_engine.py:155:          Date set: 01/12/2025
+2025-08-25 01:53:40 [    INFO] flight_filter_engine.py:174:     Search submitted successfully
+2025-08-25 01:53:55 [    INFO] flight_filter_engine.py:184:     Results page loaded successfully
+2025-08-25 01:53:55 [    INFO] flight_filter_engine.py:51:    BEFORE filtering: 75 flights visible
+2025-08-25 01:53:55 [    INFO] flight_filter_engine.py:426:      Applying UI filters...
+2025-08-25 01:54:00 [    INFO] flight_filter_engine.py:430:         Applying UI filters: 1 Stop + ₹2,000-₹6,000
+2025-08-25 01:54:00 [    INFO] flight_filter_engine.py:433:             1. Setting stops filter: 1 Stop
+2025-08-25 01:54:00 [    INFO] flight_filter_engine.py:599:                 Target checkbox: chkOneStop (keep this CHECKED)
+2025-08-25 01:54:00 [    INFO] flight_filter_engine.py:609:                 → Unchecked chkNonStop
+2025-08-25 01:54:01 [    INFO] flight_filter_engine.py:609:                 → Unchecked chkTwoStop
+2025-08-25 01:54:02 [    INFO] flight_filter_engine.py:615:                 → chkOneStop already checked 
+2025-08-25 01:54:07 [    INFO] flight_filter_engine.py:441:             2. Dragging price slider handles: ₹2,000-₹6,000
+2025-08-25 01:54:08 [    INFO] flight_filter_engine.py:560:                 → Requested: ₹2,000 - ₹6,000
+2025-08-25 01:54:08 [    INFO] flight_filter_engine.py:561:                 → Actual: ₹3,577 - ₹5,946
+2025-08-25 01:54:08 [    INFO] flight_filter_engine.py:562:                 → Difference: MIN +1,577 | MAX -54
+2025-08-25 01:54:11 [    INFO] flight_filter_engine.py:456:             → UPDATED PRICE RANGE: Using ₹3,577-₹5,946 (slider precision limitation)
+2025-08-25 01:54:11 [    INFO] flight_filter_engine.py:457:             → All subsequent filtering will use the actual slider values
+2025-08-25 01:54:11 [    INFO] flight_filter_engine.py:463:     Updated config will be used for validation and reporting
+2025-08-25 01:54:11 [    INFO] flight_filter_engine.py:465:             → UI interaction complete - both filters applied
+2025-08-25 01:54:24 [    INFO] flight_filter_engine.py:473:     All UI filters applied
+2025-08-25 01:54:24 [    INFO] flight_filter_engine.py:58:    AFTER UI filtering: 1 flights visible
+2025-08-25 01:54:29 [    INFO] flight_filter_engine.py:716: Extracted 1 visible flights from 75 total
+2025-08-25 01:54:29 [    INFO] flight_filter_engine.py:63:    UI Filter Applied - 1 flights data extracted
+2025-08-25 01:54:29 [    INFO] flight_filter_engine.py:755:     VALIDATION  PASSED: 1/1 valid | Price: ₹3,577-₹5,946 | Stops: 1 Stop
+2025-08-25 01:54:29 [    INFO] test_part1_core_automation.py:100:   Success: Found 75 flights for your search
+2025-08-25 01:54:29 [    INFO] test_part1_core_automation.py:103:  Filter Status: PASSED
+2025-08-25 01:54:29 [    INFO] test_part1_core_automation.py:156:  Extracting and consolidating flight data...
+2025-08-25 01:54:29 [    INFO] test_part1_core_automation.py:217:  Consolidation complete: 1 flights meet all criteria
+2025-08-25 01:54:29 [    INFO] test_part1_core_automation.py:218:  Airlines found: AkasaAir
+2025-08-25 01:54:29 [    INFO] test_part1_core_automation.py:219:  Price range: ₹5,587 - ₹5,587
+2025-08-25 01:54:29 [    INFO] test_part1_core_automation.py:241:  Saving data to Excel file 
+2025-08-25 01:54:29 [    INFO] test_part1_core_automation.py:362:  Excel file saved successfully: Part1_Core_Automation_Pytest_Results_20250825_015429.xlsx
+2025-08-25 01:54:29 [    INFO] test_part1_core_automation.py:363:  Data format: Assignment compliant (Airline Name, Price, Airport Codes)
+2025-08-25 01:54:29 [    INFO] test_part1_core_automation.py:364:  Consolidation: Grouped by airline, sorted by price
+2025-08-25 01:54:29 [    INFO] test_part1_core_automation.py:130:  SUCCESS: PART 1 AUTOMATION COMPLETED SUCCESSFULLY!
+2025-08-25 01:54:29 [    INFO] test_part1_core_automation.py:131:  Total flights found: 75
+2025-08-25 01:54:29 [    INFO] test_part1_core_automation.py:132:  Filtered flights (meeting criteria): 1
+2025-08-25 01:54:29 [    INFO] test_part1_core_automation.py:133:  Excel report: Part1_Core_Automation_Pytest_Results_20250825_015429.xlsx
+2025-08-25 01:54:29 [    INFO] test_part1_core_automation.py:138:  Airlines found: 1
+2025-08-25 01:54:29 [    INFO] test_part1_core_automation.py:139:  Price range found: ₹5,587 - ₹5,587
+2025-08-25 01:54:29 [    INFO] test_part1_core_automation.py:150:  PART 1 PYTEST TEST COMPLETED SUCCESSFULLY!

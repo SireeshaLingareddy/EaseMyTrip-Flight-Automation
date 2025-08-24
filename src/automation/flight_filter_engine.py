@@ -62,11 +62,15 @@ class PureUIFilterEngine:
                 
                 self.logger.info(f"   UI Filter Applied - {len(ui_filtered_flights)} flights data extracted")
                 
+                # 6. Validate extracted flights meet criteria
+                validation_result = self._validate_extracted_flights_meet_criteria(ui_filtered_flights, config)
+                
                 return {
                     "status": "SUCCESS",
                     "before_count": before_count,
                     "after_count": after_count, 
                     "ui_filtered_flights": ui_filtered_flights,
+                    "validation_result": validation_result,
                     "test_config": config.__dict__
                 }
                 
@@ -622,7 +626,7 @@ class PureUIFilterEngine:
             return False
 
     def _extract_filtered_flights_only(self, page: Page, config: TestConfig) -> List[Dict[str, Any]]:
-        """Extract only flights visible in UI and validate against criteria"""
+        """Extract only flights visible in UI after filtering"""
         try:
             page.wait_for_timeout(5000)
             
@@ -709,19 +713,7 @@ class PureUIFilterEngine:
                 self.logger.warning(f"No flights visible in UI - filtering may have hidden all flights")
                 return []
             
-            # Validate flights against criteria
-            price_violations = [f for f in visible_flights if not (config.price_min <= f['price'] <= config.price_max)]
-            stop_violations = [f for f in visible_flights if f['stops'] != config.stops_filter]
-            
             self.logger.info(f"Extracted {len(visible_flights)} visible flights from {total_dom_flights} total")
-            
-            if price_violations or stop_violations:
-                self.logger.error(f"Filter validation failed: {len(price_violations)} price violations, {len(stop_violations)} stop violations")
-                if stop_violations and len(stop_violations) <= 5:  # Log first few for debugging
-                    for violation in stop_violations[:3]:
-                        self.logger.error(f"  Stop mismatch: Flight has '{violation['stops']}' but expected '{config.stops_filter}'")
-            else:
-                self.logger.info(f"All flights meet filter criteria: {config.stops_filter} | Rs{config.price_min:,}-Rs{config.price_max:,}")
             
             return visible_flights
             
@@ -731,73 +723,54 @@ class PureUIFilterEngine:
             
     def _validate_extracted_flights_meet_criteria(self, flights: List[Dict[str, Any]], config: TestConfig) -> Dict[str, Any]:
         """Validate extracted flights meet filter criteria"""
+        if not flights:
+            self.logger.info("    VALIDATION: No flights to validate")
+            return {'total_flights': 0, 'valid_flights': 0, 'invalid_flights': 0, 'validation_passed': True}
+        
         try:
-            valid_flights = 0
-            invalid_flights = 0
-            invalid_details = []
-            
-            self.logger.info(f"    VALIDATING: Checking {len(flights)} flights against filter criteria")
-            self.logger.info(f"    Expected Price Range: ₹{config.price_min:,} - ₹{config.price_max:,}")
-            self.logger.info(f"    Expected Stops: {config.stops_filter}")
-            
-            for i, flight in enumerate(flights):
-                flight_price = flight.get('price', 0)
-                flight_stops = flight.get('stops', 'Unknown')
-                airline = flight.get('airline', 'Unknown')
-                
-                # Validate price range
-                price_valid = config.price_min <= flight_price <= config.price_max
-                
-                # Validate stops filter
-                stops_valid = False
-                if config.stops_filter in ['Non-stop', 'Nonstop']:
-                    stops_valid = flight_stops in ['Non-stop', 'Nonstop']
-                elif config.stops_filter in ['1 Stop', '1-stop', 'One Stop']:
-                    stops_valid = flight_stops in ['1 Stop', '1-stop', 'One Stop']
-                elif config.stops_filter in ['2+ Stop', '2 Stop', '2 Stops', 'Two Stop']:
-                    stops_valid = flight_stops in ['2+ Stop', '2 Stop', '2 Stops', 'Two Stop']
-                
-                if price_valid and stops_valid:
-                    valid_flights += 1
-                    self.logger.info(f"       Flight {i+1} VALID: {airline} ₹{flight_price} {flight_stops}")
-                else:
-                    invalid_flights += 1
-                    invalid_reason = []
-                    if not price_valid:
-                        invalid_reason.append(f"price ₹{flight_price} outside range ₹{config.price_min:,}-₹{config.price_max:,}")
-                    if not stops_valid:
-                        invalid_reason.append(f"stops '{flight_stops}' does not match '{config.stops_filter}'")
-                    
-                    invalid_details.append({
-                        'flight_index': i+1,
-                        'airline': airline,
-                        'price': flight_price,
-                        'stops': flight_stops,
-                        'reasons': invalid_reason
-                    })
-                    self.logger.error(f"       Flight {i+1} INVALID: {airline} ₹{flight_price} {flight_stops} - {', '.join(invalid_reason)}")
-            
-            validation_summary = {
-                'total_flights': len(flights),
-                'valid_flights': valid_flights,
-                'invalid_flights': invalid_flights,
-                'invalid_details': invalid_details,
-                'validation_passed': invalid_flights == 0
+            # Define stops equivalencies for quick lookup
+            stops_map = {
+                'Non-stop': 'Non-stop', 'Nonstop': 'Non-stop',
+                '1 Stop': '1 Stop', '1-stop': '1 Stop', 'One Stop': '1 Stop',
+                '2+ Stop': '2+ Stop', '2 Stop': '2+ Stop', '2 Stops': '2+ Stop', 'Two Stop': '2+ Stop'
             }
+            expected_stop = stops_map.get(config.stops_filter, config.stops_filter)
             
-            if invalid_flights == 0:
-                self.logger.info(f"    VALIDATION RESULT: SUCCESS - All {valid_flights} flights meet criteria")
-            else:
-                self.logger.error(f"    VALIDATION RESULT: FAILED - {invalid_flights} out of {len(flights)} flights do not meet criteria")
+            # Validate flights using list comprehensions
+            valid_flights = [
+                f for f in flights 
+                if (config.price_min <= f.get('price', 0) <= config.price_max and 
+                    stops_map.get(f.get('stops', ''), f.get('stops', '')) == expected_stop)
+            ]
             
-            return validation_summary
+            invalid_flights = [f for f in flights if f not in valid_flights]
+            validation_passed = len(invalid_flights) == 0
+            
+            # Log summary
+            total = len(flights)
+            valid_count = len(valid_flights)
+            invalid_count = len(invalid_flights)
+            
+            status = " PASSED" if validation_passed else " FAILED"
+            self.logger.info(f"    VALIDATION {status}: {valid_count}/{total} valid | Price: ₹{config.price_min:,}-₹{config.price_max:,} | Stops: {config.stops_filter}")
+            
+            # Log invalid flights (only if failures exist and count is reasonable)
+            if invalid_count > 0 and invalid_count <= 3:
+                for i, flight in enumerate(invalid_flights[:3], 1):
+                    price_issue = f"price ₹{flight.get('price', 0)}" if not (config.price_min <= flight.get('price', 0) <= config.price_max) else ""
+                    stops_issue = f"stops '{flight.get('stops', '')}'" if stops_map.get(flight.get('stops', ''), flight.get('stops', '')) != expected_stop else ""
+                    issues = " | ".join(filter(None, [price_issue, stops_issue]))
+                    self.logger.error(f"        Invalid {i}: {flight.get('airline', '')} - {issues}")
+            elif invalid_count > 3:
+                self.logger.error(f"        {invalid_count} invalid flights (showing summary only)")
+            
+            return {
+                'total_flights': total,
+                'valid_flights': valid_count,
+                'invalid_flights': invalid_count,
+                'validation_passed': validation_passed
+            }
             
         except Exception as e:
             self.logger.error(f"    Validation error: {e}")
-            return {
-                'total_flights': len(flights),
-                'valid_flights': 0,
-                'invalid_flights': len(flights),
-                'invalid_details': [{'error': str(e)}],
-                'validation_passed': False
-            }  
+            return {'total_flights': len(flights), 'valid_flights': 0, 'invalid_flights': len(flights), 'validation_passed': False}  

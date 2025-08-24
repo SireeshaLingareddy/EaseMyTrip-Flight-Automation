@@ -1,0 +1,66 @@
+2025-08-25 01:53:18 - INFO - ================================================================================
+2025-08-25 01:53:18 - INFO -  PYTEST SESSION STARTED - EaseMyTrip Automation
+2025-08-25 01:53:18 - INFO - ================================================================================
+2025-08-25 01:53:18 - INFO -  PART 1: Flight Search Automation - Core Implementation (Pytest)
+2025-08-25 01:53:18 - INFO -  Single test case with filters and data extraction
+2025-08-25 01:53:18 - INFO - ================================================================================
+2025-08-25 01:53:18 - INFO -  Part 1 Configuration:
+2025-08-25 01:53:18 - INFO -    Route: Ahmedabad -> Goa
+2025-08-25 01:53:18 - INFO -    Date: 2025-12-01
+2025-08-25 01:53:18 - INFO -    Stops Filter: 1 Stop
+2025-08-25 01:53:18 - INFO -    Price Range: ₹2,000 - ₹6,000
+2025-08-25 01:53:18 - INFO - ------------------------------------------------------------
+2025-08-25 01:53:19 - INFO - Testing UI Filter: PART1_CORE_PYTEST
+2025-08-25 01:53:19 - INFO -    Description: Part 1 core automation: 1 Stop flights Delhi to Bengaluru with ₹4000-₹8000 price range
+2025-08-25 01:53:19 - INFO -    Route: Ahmedabad → Goa
+2025-08-25 01:53:19 - INFO -    Date: 2025-12-01
+2025-08-25 01:53:19 - INFO -    Filter Test: 1 Stop + ₹2,000-₹6,000
+2025-08-25 01:53:24 - INFO -      Selecting FROM city: Ahmedabad
+2025-08-25 01:53:28 - INFO -          FROM: Ahmedabad(AMD)Sardar Vallabhbhai Patel International Airport India Nearby Airport Found (Score: 1000, Airport: AMD)
+2025-08-25 01:53:29 - INFO -          FROM confirmed: Ahmedabad
+2025-08-25 01:53:29 - INFO -      Selecting TO city: Goa
+2025-08-25 01:53:33 - INFO -          TO: Goa(GOI)Dabolim Goa International Airport India Nearby Airport Found (Score: 1000, Airport: GOI)
+2025-08-25 01:53:34 - INFO -          TO confirmed: Goa
+2025-08-25 01:53:35 - INFO -      Verified: Ahmedabad → Goa
+2025-08-25 01:53:35 - INFO -       Setting departure date: 2025-12-01
+2025-08-25 01:53:38 - INFO -          Date set: 01/12/2025
+2025-08-25 01:53:40 - INFO -     Search submitted successfully
+2025-08-25 01:53:55 - INFO -     Results page loaded successfully
+2025-08-25 01:53:55 - INFO -    BEFORE filtering: 75 flights visible
+2025-08-25 01:53:55 - INFO -      Applying UI filters...
+2025-08-25 01:54:00 - INFO -         Applying UI filters: 1 Stop + ₹2,000-₹6,000
+2025-08-25 01:54:00 - INFO -             1. Setting stops filter: 1 Stop
+2025-08-25 01:54:00 - INFO -                 Target checkbox: chkOneStop (keep this CHECKED)
+2025-08-25 01:54:00 - INFO -                 → Unchecked chkNonStop
+2025-08-25 01:54:01 - INFO -                 → Unchecked chkTwoStop
+2025-08-25 01:54:02 - INFO -                 → chkOneStop already checked 
+2025-08-25 01:54:07 - INFO -             2. Dragging price slider handles: ₹2,000-₹6,000
+2025-08-25 01:54:08 - INFO -                 → Requested: ₹2,000 - ₹6,000
+2025-08-25 01:54:08 - INFO -                 → Actual: ₹3,577 - ₹5,946
+2025-08-25 01:54:08 - INFO -                 → Difference: MIN +1,577 | MAX -54
+2025-08-25 01:54:11 - INFO -             → UPDATED PRICE RANGE: Using ₹3,577-₹5,946 (slider precision limitation)
+2025-08-25 01:54:11 - INFO -             → All subsequent filtering will use the actual slider values
+2025-08-25 01:54:11 - INFO -     Updated config will be used for validation and reporting
+2025-08-25 01:54:11 - INFO -             → UI interaction complete - both filters applied
+2025-08-25 01:54:24 - INFO -     All UI filters applied
+2025-08-25 01:54:24 - INFO -    AFTER UI filtering: 1 flights visible
+2025-08-25 01:54:29 - INFO - Extracted 1 visible flights from 75 total
+2025-08-25 01:54:29 - INFO -    UI Filter Applied - 1 flights data extracted
+2025-08-25 01:54:29 - INFO -     VALIDATION  PASSED: 1/1 valid | Price: ₹3,577-₹5,946 | Stops: 1 Stop
+2025-08-25 01:54:29 - INFO -   Success: Found 75 flights for your search
+2025-08-25 01:54:29 - INFO -  Filter Status: PASSED
+2025-08-25 01:54:29 - INFO -  Extracting and consolidating flight data...
+2025-08-25 01:54:29 - INFO -  Consolidation complete: 1 flights meet all criteria
+2025-08-25 01:54:29 - INFO -  Airlines found: AkasaAir
+2025-08-25 01:54:29 - INFO -  Price range: ₹5,587 - ₹5,587
+2025-08-25 01:54:29 - INFO -  Saving data to Excel file 
+2025-08-25 01:54:29 - INFO -  Excel file saved successfully: Part1_Core_Automation_Pytest_Results_20250825_015429.xlsx
+2025-08-25 01:54:29 - INFO -  Data format: Assignment compliant (Airline Name, Price, Airport Codes)
+2025-08-25 01:54:29 - INFO -  Consolidation: Grouped by airline, sorted by price
+2025-08-25 01:54:29 - INFO -  SUCCESS: PART 1 AUTOMATION COMPLETED SUCCESSFULLY!
+2025-08-25 01:54:29 - INFO -  Total flights found: 75
+2025-08-25 01:54:29 - INFO -  Filtered flights (meeting criteria): 1
+2025-08-25 01:54:29 - INFO -  Excel report: Part1_Core_Automation_Pytest_Results_20250825_015429.xlsx
+2025-08-25 01:54:29 - INFO -  Airlines found: 1
+2025-08-25 01:54:29 - INFO -  Price range found: ₹5,587 - ₹5,587
+2025-08-25 01:54:29 - INFO -  PART 1 PYTEST TEST COMPLETED SUCCESSFULLY!
