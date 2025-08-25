@@ -19,8 +19,6 @@ EaseMyTrip_Flight_Automation/
 ├── README.md                           # Project documentation
 ├── conftest.py                         # Pytest configuration and fixtures
 ├── pytest.ini                         # Pytest settings
-├── run_part1.py                        # Part 1 test runner
-├── run_part2.py                        # Part 2 test runner  
 ├── run_tests.py                        # Main test execution script
 ├── config/
 │   ├── requirements.txt                # Python dependencies
