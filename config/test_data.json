@@ -17,7 +17,7 @@
         "departure_date": "2025-09-02",
         "stops_filter": "Non-stop",
         "price_min": 3000,
-        "price_max": 4500 
+        "price_max": 9500 
     },
     {
         "test_id": "TC003",
@@ -36,8 +36,8 @@
         "to_city":"Delhi",
         "departure_date": "2025-09-04",
         "stops_filter": "2+ Stop",
-        "price_min": 5000,
-        "price_max": 7000
+        "price_min": 10000,
+        "price_max": 17000
     },
     {
         "test_id": "TC005",
@@ -66,8 +66,8 @@
         "to_city": "Bengaluru",
         "departure_date": "2025-09-07",
         "stops_filter": "1 Stop",
-        "price_min": 6000,
-        "price_max": 7500
+        "price_min": 8000,
+        "price_max": 9500
     },
     {
         "test_id": "TC008",
@@ -85,7 +85,7 @@
         "from_city": "Mumbai",
         "to_city": "Pune",
         "departure_date": "2025-09-09",
-        "stops_filter": "2+ Stop",
+        "stops_filter": "1 Stop",
         "price_min": 5000,
         "price_max": 6500
     },

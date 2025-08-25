@@ -1,6 +1,8 @@
 """EaseMyTrip Flight Filter Testing Engine"""
 
 import re
+import signal
+import gc
 from typing import List, Dict, Any
 from dataclasses import dataclass
 
@@ -31,11 +33,45 @@ class PureUIFilterEngine:
         
     def test_ui_filter_functionality(self, config: TestConfig) -> Dict[str, Any]:
         """Test EaseMyTrip UI filtering: search → filter → validate results"""
-        with sync_playwright() as p:
-            browser = p.chromium.launch(headless=False)
-            page = browser.new_page()
+        browser = None
+        page = None
+        
+        # Set up comprehensive timeout protection for individual test cases
+        def test_timeout_handler(signum, frame):
+            raise TimeoutError(f"Test case {config.test_id} exceeded 240 seconds timeout")
+        
+        try:
+            # Set 240-second timeout for entire test case (4 minutes per test)
+            signal.signal(signal.SIGALRM, test_timeout_handler)
+            signal.alarm(240)
             
-            try:
+            with sync_playwright() as p:
+                # Launch browser with optimized settings for stability and automation
+                browser = p.chromium.launch(
+                    headless=False,                                    # Show browser window for debugging
+                    args=[
+                        '--no-sandbox',                               # Disable sandboxing (required for some environments)
+                        '--disable-dev-shm-usage',                   # Use /tmp instead of /dev/shm (don't use shared memory)
+                        '--disable-gpu',                             # Disable GPU acceleration (stability)
+                        '--disable-extensions',                      # Disable browser extensions (clean environment)
+                        '--disable-background-timer-throttling',     # Prevent background tab throttling
+                        '--disable-backgrounding-occluded-windows',  # Keep hidden windows active
+                        '--disable-renderer-backgrounding',          # Prevent renderer process backgrounding
+                        '--memory-pressure-off'                     # Disable memory pressure handling
+                    ]
+                )
+                
+                # Create new context and page
+                context = browser.new_context(
+                    viewport={'width': 1280, 'height': 720},
+                    user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'  # Pretend to be real Mac Chrome browser
+                )
+                page = context.new_page()
+                
+                # Set shorter timeouts to prevent hanging
+                page.set_default_timeout(30000)
+                page.set_default_navigation_timeout(45000)
+                
                 self.logger.info(f"Testing UI Filter: {config.test_id}")
                 self.logger.info(f"   Description: {config.description}")
                 self.logger.info(f"   Route: {config.from_city} → {config.to_city}")
@@ -57,8 +93,28 @@ class PureUIFilterEngine:
                 after_count = self._count_visible_flights(page)
                 self.logger.info(f"   AFTER UI filtering: {after_count} flights visible")
                 
-                # 5. Extract ONLY what the UI shows 
-                ui_filtered_flights = self._extract_filtered_flights_only(page, config)
+                # 5. Extract ONLY what the UI shows with timeout protection    
+                def timeout_handler(signum, frame):
+                    raise TimeoutError("Flight extraction timed out after 60 seconds")
+                
+                try:
+                    # Set 60-second timeout for extraction
+                    signal.signal(signal.SIGALRM, timeout_handler)
+                    signal.alarm(60)
+                    
+                    ui_filtered_flights = self._extract_filtered_flights_only(page, config)
+                    
+                    # Cancel timeout
+                    signal.alarm(0)
+                    
+                except TimeoutError as e:
+                    signal.alarm(0)
+                    self.logger.error(f"    EXTRACTION TIMEOUT: {e}")
+                    raise Exception("Flight extraction exceeded timeout limit")
+                except Exception as e:
+                    signal.alarm(0)
+                    self.logger.error(f"    EXTRACTION FAILED: {e}")
+                    raise e
                 
                 self.logger.info(f"   UI Filter Applied - {len(ui_filtered_flights)} flights data extracted")
                 
@@ -74,12 +130,46 @@ class PureUIFilterEngine:
                     "test_config": config.__dict__
                 }
                 
-            except Exception as e:
-                self.logger.error(f"   UI Filter Test Error: {e}")
-                return {"status": "ERROR", "error": str(e), "flights": []}
+        except TimeoutError as e:
+            # Cancel timeout signal
+            signal.alarm(0)
+            self.logger.error(f"   TEST TIMEOUT: {e}")
+            return {
+                "status": "TIMEOUT", 
+                "error": str(e), 
+                "test_config": config.__dict__,
+                "flights": []
+            }
                 
-            finally:
-                browser.close()
+        except Exception as e:
+            # Cancel timeout signal
+            signal.alarm(0)
+            self.logger.error(f"   UI Filter Test Error: {e}")
+            return {"status": "ERROR", "error": str(e), "flights": []}
+            
+        finally:
+            # Cancel any remaining timeout signal
+            signal.alarm(0)
+            
+            # Centralized cleanup - handles all scenarios
+            try:
+                if page:
+                    page.close()
+            except:
+                pass
+            try:
+                if context:
+                    context.close()
+            except:
+                pass
+            try:
+                if browser:
+                    browser.close()
+            except:
+                pass
+            
+            # we clean up the garbage for every test case to avoid memory issue
+            gc.collect()
 
     def _perform_flight_search(self, page: Page, config: TestConfig) -> bool:
         """Navigate to EaseMyTrip, fill search form, and submit"""
@@ -96,7 +186,6 @@ class PureUIFilterEngine:
             to_success = self._select_city(page, 'to', config.to_city)
             
             # Verify selections
-            page.wait_for_timeout(1000)
             from_value = page.evaluate("document.querySelector('#FromSector_show').value")
             to_value = page.evaluate("document.querySelector('#Editbox13_show').value")
             self.logger.info(f"     Verified: {from_value} → {to_value}")
@@ -127,7 +216,7 @@ class PureUIFilterEngine:
                     dateField.removeAttribute('readonly');
                 }
             """)
-            page.wait_for_timeout(1500)
+            page.wait_for_timeout(1500)  # Allow overlay cleanup to complete
             
             formatted_date = self._format_date_for_input(config.departure_date)
             
@@ -137,7 +226,6 @@ class PureUIFilterEngine:
             except Exception:
                 pass  # Continue with direct assignment
             
-            page.wait_for_timeout(1000)
             page.evaluate(f"""
                 const dateField = document.querySelector('#ddate');
                 if (dateField) {{
@@ -149,7 +237,6 @@ class PureUIFilterEngine:
             """)
             
             # Verify date setting
-            page.wait_for_timeout(1000)
             actual_date = page.evaluate("document.querySelector('#ddate').value")
             if actual_date and actual_date.strip():
                 self.logger.info(f"         Date set: {actual_date}")
@@ -167,20 +254,18 @@ class PureUIFilterEngine:
                     }
                 });
             """)
-            page.wait_for_timeout(1000)
             
             try:
-                page.click('[value="Search"]', timeout=5000)
+                page.click('[value="Search"]')
                 self.logger.info(f"    Search submitted successfully")
             except Exception as e:
                 self.logger.error(f"    Search submission failed: {e}")
                 return False
             
-            page.wait_for_timeout(15000)
-            
-            # Verify results page loaded
+            # Modern Playwright approach - wait for results to load
             try:
-                page.wait_for_selector('.fltResult', timeout=10000)
+                # Wait for flight results to appear
+                page.locator('.fltResult').first.wait_for(timeout=25000)
                 self.logger.info(f"    Results page loaded successfully")
                 return True
             except:
@@ -200,7 +285,6 @@ class PureUIFilterEngine:
             
             # Clear and focus field
             page.evaluate(f"document.querySelector('{input_id}').value = ''")
-            page.wait_for_timeout(500)
             
             # Different click strategies for EaseMyTrip's event handlers
             if field_type.lower() == 'from':
@@ -210,13 +294,11 @@ class PureUIFilterEngine:
                 # TO field: JavaScript click (bypasses overlays)
                 page.evaluate(f"document.querySelector('{input_id}').click()")
             
-            page.wait_for_timeout(1000)
-            
             # Type city name and detect autocomplete
             suggestions_found = False
             for i, char in enumerate(city_name):
                 page.keyboard.type(char)
-                page.wait_for_timeout(300)
+                page.wait_for_timeout(300)  # Essential: Allow autocomplete to respond to each character
                 
                 # Check for suggestions every 3 characters
                 if i >= 2 and (i + 1) % 2 == 0:
@@ -251,7 +333,6 @@ class PureUIFilterEngine:
 
     def _select_from_autocomplete(self, page: Page, city_name: str, input_id: str, autocomplete_container: str, field_type: str, suggestions_found: bool) -> bool:
         """Select city from autocomplete dropdown with fallback strategy"""
-        page.wait_for_timeout(1000)
         
         # Create city variations
         city_variations = self._get_city_variations(city_name)
@@ -343,7 +424,6 @@ class PureUIFilterEngine:
         """)
         
         if fallback_check.get('success'):
-            page.wait_for_timeout(500)
             return self._attempt_city_selection(page, city_variations, autocomplete_container)
         
         return {'success': False, 'error': 'No fallback suggestions'}
@@ -357,7 +437,6 @@ class PureUIFilterEngine:
         self.logger.info(f"         {field_type.upper()}: {selected_text} (Score: {match_score}, Airport: {airport_code or 'N/A'})")
         
         # Verify selection
-        page.wait_for_timeout(800)
         final_value = page.evaluate(f"document.querySelector('{input_id}').value")
         if final_value and final_value.strip():
             self.logger.info(f"         {field_type.upper()} confirmed: {final_value}")
@@ -424,7 +503,6 @@ class PureUIFilterEngine:
         """Apply stops and price filters with proper timing"""
         try:
             self.logger.info(f"     Applying UI filters...")
-            page.wait_for_timeout(5000)
             
             # Apply both price and stops filters directly
             self.logger.info(f"        Applying UI filters: {config.stops_filter} + ₹{config.price_min:,}-₹{config.price_max:,}")
@@ -437,7 +515,6 @@ class PureUIFilterEngine:
                 return
             
             # Step 2: Apply price filter 
-            page.wait_for_timeout(2000)  # Wait for stops filter to settle
             self.logger.info(f"            2. Dragging price slider handles: ₹{config.price_min:,}-₹{config.price_max:,}")
             
             price_result = self._drag_price_slider_handles(page, config.price_min, config.price_max)
@@ -446,7 +523,7 @@ class PureUIFilterEngine:
                 return
             
             # Step 3: Wait for filtering to complete
-            page.wait_for_timeout(3000)
+            page.wait_for_timeout(3000)  # Essential for UI filtering to process
             
             # Update config with actual slider values
             actual_min = price_result["actual_min"]
@@ -465,10 +542,7 @@ class PureUIFilterEngine:
             self.logger.info(f"            → UI interaction complete - both filters applied")
             
             # Wait for filtering to stabilize
-            page.wait_for_timeout(8000)
-            
-            # Extra wait for dynamic filtering
-            page.wait_for_timeout(5000)
+            page.wait_for_timeout(5000)  # Critical: Allow dynamic filtering to complete
             
             self.logger.info(f"    All UI filters applied")
             
@@ -477,7 +551,16 @@ class PureUIFilterEngine:
 
     def _drag_price_slider_handles(self, page: Page, min_price: int, max_price: int):
         """Drag price slider handles and return actual values set"""
+        
+        # Set up timeout protection for price slider operation
+        def slider_timeout_handler(signum, frame):
+            raise TimeoutError("Price slider manipulation timed out after 45 seconds")
+        
         try:
+            # Set 45-second timeout for price slider operation
+            signal.signal(signal.SIGALRM, slider_timeout_handler)
+            signal.alarm(45)
+            
             # Get slider info and calculate positions
             slider_info = page.evaluate(f"""
                 () => {{
@@ -572,9 +655,21 @@ class PureUIFilterEngine:
                 self.logger.error(f"                → Slider verification failed")
                 return {"success": False}
                 
+        except TimeoutError as e:
+            # Cancel timeout signal
+            signal.alarm(0)
+            self.logger.error(f"                → SLIDER TIMEOUT: {e}")
+            return {"success": False, "error": "timeout"}
+                
         except Exception as e:
+            # Cancel timeout signal  
+            signal.alarm(0)
             self.logger.error(f"                → Slider error: {e}")
             return {"success": False}
+        
+        finally:
+            # Always cancel timeout signal
+            signal.alarm(0)
     
     def _apply_stops_filter(self, page: Page, stops_filter: str):
         """Apply stops filter by checking/unchecking checkboxes"""
@@ -607,7 +702,6 @@ class PureUIFilterEngine:
                     if is_checked:
                         page.locator(f"#{checkbox_id}").click(force=True, timeout=5000)
                         self.logger.info(f"                → Unchecked {checkbox_id}")
-                        page.wait_for_timeout(1000)
             
             # Ensure target checkbox is checked
             target_checked = page.evaluate(f"() => document.getElementById('{target_checkbox_id}')?.checked")
@@ -616,9 +710,8 @@ class PureUIFilterEngine:
             else:
                 page.locator(f"#{target_checkbox_id}").click(force=True, timeout=5000)
                 self.logger.info(f"                → Checked {target_checkbox_id} ")
-                page.wait_for_timeout(1000)
             
-            page.wait_for_timeout(3000)  # Wait for stops filtering to complete
+            page.wait_for_timeout(2000)  # Essential: Allow stops filtering to complete
             return True
             
         except Exception as e:
@@ -628,9 +721,24 @@ class PureUIFilterEngine:
     def _extract_filtered_flights_only(self, page: Page, config: TestConfig) -> List[Dict[str, Any]]:
         """Extract only flights visible in UI after filtering"""
         try:
-            page.wait_for_timeout(5000)
+            # Check if page is still responsive before extraction
+            try:
+                page.evaluate("document.readyState")
+            except Exception as e:
+                self.logger.warning(f"Page unresponsive during extraction: {e}")
+                raise Exception("Browser page became unresponsive during flight extraction")
             
-            # Extract visible flights from UI
+        except Exception as timeout_error:
+            self.logger.error(f"Timeout or responsiveness issue during flight extraction: {timeout_error}")
+            try:
+                # Emergency page refresh attempt
+                page.reload(wait_until="domcontentloaded", timeout=10000)
+                self.logger.info("Emergency page refresh completed")
+            except Exception as refresh_error:
+                self.logger.error(f"Emergency page refresh failed: {refresh_error}")
+                raise Exception("Browser became unresponsive - extraction failed")
+        
+        try:
             extraction_result = page.evaluate("""
                 () => {
                     const result = { visibleFlights: [], totalDOMFlights: 0 };

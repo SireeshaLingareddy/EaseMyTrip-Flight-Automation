@@ -55,19 +55,13 @@ class TestPart1CoreAutomation:
         This test performs single automation with hardcoded values as per requirements.
         Tests the complete flow: search → filter → extract → validate → export
         """
-        logger.info(" PART 1: Flight Search Automation - Core Implementation (Pytest)")
-        logger.info(" Single test case with filters and data extraction")
-        logger.info("=" * 80)
-        
-        # Store test config for reporting
+        logger.info("PART 1: Core Flight Search Automation")
         test_config = part1_hardcoded_config
         
-        logger.info(f" Part 1 Configuration:")
-        logger.info(f"   Route: {test_config.from_city} -> {test_config.to_city}")
-        logger.info(f"   Date: {test_config.departure_date}")
-        logger.info(f"   Stops Filter: {test_config.stops_filter}")
-        logger.info(f"   Price Range: ₹{test_config.price_min:,} - ₹{test_config.price_max:,}")
-        logger.info("-" * 60)
+        logger.info(f"Route: {test_config.from_city} → {test_config.to_city} | "
+                   f"Date: {test_config.departure_date} | "
+                   f"Filter: {test_config.stops_filter} | "
+                   f"Price: ₹{test_config.price_min:,}-₹{test_config.price_max:,}")
         
         # Execute UI filter testing (which includes all the required steps)
         result = automation_engine.test_ui_filter_functionality(test_config)
@@ -76,35 +70,43 @@ class TestPart1CoreAutomation:
         assert result is not None, "Automation engine returned None result"
         assert 'status' in result, "Result missing status field"
         
-        #  CRITICAL: Check result status FIRST - fail test if core operations failed
+        # CRITICAL: Check result status FIRST - fail test if core operations failed
         result_status = result.get('status', 'UNKNOWN')
         if result_status == 'FAIL':
             failure_reason = result.get('reason', 'Unknown failure')
-            pytest.fail(f" PART 1 TEST FAILED: Core operation failed - {failure_reason}")
+            pytest.fail(f"PART 1 TEST FAILED: Core operation failed - {failure_reason}")
         elif result_status == 'ERROR':
             error_details = result.get('error', 'Unknown error')
-            pytest.fail(f" PART 1 TEST ERROR: Exception occurred - {error_details}")
+            pytest.fail(f"PART 1 TEST ERROR: Exception occurred - {error_details}")
         elif result_status != 'SUCCESS':
-            pytest.fail(f" PART 1 TEST FAILED: Invalid status '{result_status}' - Expected SUCCESS, FAIL, or ERROR")
+            pytest.fail(f"PART 1 TEST FAILED: Invalid status '{result_status}'")
         
-        # If we reach here, result_status is SUCCESS - proceed with flight analysis
-        filter_status = result_status
-        flights_found = result.get('before_count', 0)
+        # Process results and validate
+        flights_found = len(result.get('ui_filtered_flights', []))
+        validation_result = result.get('validation_result', {})
+        validation_passed = validation_result.get('validation_passed', True)
         
         if flights_found == 0:
-            user_message = "  No flights found matching your criteria. Try adjusting filters or different dates."
-            logger.info(f" {user_message}")
+            user_message = "No flights found matching criteria"
+            logger.info(user_message)
             filter_status = 'NO_FLIGHTS_FOUND'
-        else:
-            user_message = f" Success: Found {flights_found} flights for your search"
-            logger.info(f" {user_message}")
+        elif validation_passed:
+            user_message = f"Success: {flights_found} flights found and validated"
+            logger.info(user_message)
             filter_status = 'PASSED'
+        else:
+            # Validation failed - fail the test
+            invalid_count = validation_result.get('invalid_flights', 0)
+            valid_count = validation_result.get('valid_flights', 0)
+            logger.error(f"VALIDATION FAILED: {valid_count}/{flights_found} valid, {invalid_count} invalid")
+            pytest.fail(f"PART 1 VALIDATION FAILED: {invalid_count} flights don't match filter criteria")
         
-        logger.info(f" Filter Status: {filter_status}")
-        
-        # Extract detailed flight data for Part 1 requirements
+        # Extract and consolidate data
         detailed_result = self._extract_and_consolidate_data(result, test_config, logger)
-        
+        result['user_message'] = user_message
+        result['filter_status'] = filter_status
+        detailed_result['user_message'] = user_message
+        detailed_result['filter_status'] = filter_status
         # Store user message for Excel export
         result['user_message'] = user_message
         result['filter_status'] = filter_status
@@ -123,38 +125,19 @@ class TestPart1CoreAutomation:
         assert excel_result.get('success', False), f"Excel export failed: {excel_result.get('error', 'Unknown error')}"
         assert excel_result.get('filename'), "Excel filename not provided"
         
-        # Log results based on flights found
-        if flights_found == 0:
-            logger.info(" COMPLETED: PART 1 AUTOMATION - NO FLIGHTS FOUND")
-        else:
-            logger.info(" SUCCESS: PART 1 AUTOMATION COMPLETED SUCCESSFULLY!")
-        logger.info(f" Total flights found: {flights_found}")
-        logger.info(f" Filtered flights (meeting criteria): {detailed_result['filtered_count']}")
-        logger.info(f" Excel report: {excel_result['filename']}")
+        # Final results summary
+        logger.info(f"PART 1 COMPLETED | Flights: {flights_found} | "
+                   f"Valid: {detailed_result['filtered_count']} | "
+                   f"Excel: {excel_result['filename']}")
         
-        # Data consolidation summary
         if 'consolidation_summary' in detailed_result:
             summary = detailed_result['consolidation_summary']
-            logger.info(f" Airlines found: {summary.get('unique_airlines', 0)}")
-            logger.info(f" Price range found: ₹{summary.get('min_price', 0):,} - ₹{summary.get('max_price', 0):,}")
-        
-        # Store results for potential use in other tests or reporting
-        self._test_result = {
-            'status': 'PASS',
-            'flights_found': result.get('before_count', 0),
-            'filtered_flights': detailed_result['filtered_count'],
-            'excel_file': excel_result['filename'],
-            'test_config': test_config.__dict__
-        }
-        
-        logger.info(" PART 1 PYTEST TEST COMPLETED SUCCESSFULLY!")
-        print ("=" * 180)
+            logger.info(f"Airlines: {summary.get('unique_airlines', 0)} | "
+                       f"Price Range: ₹{summary.get('min_price', 0):,}-₹{summary.get('max_price', 0):,}")
     
     def _extract_and_consolidate_data(self, ui_result: Dict[str, Any], config: TestConfig, logger) -> Dict[str, Any]:
         """Extract detailed flight data and consolidate as per Part 1 requirements"""
         try:
-            logger.info(" Extracting and consolidating flight data...")
-            
             ui_flights = ui_result.get('ui_filtered_flights', [])
             if not ui_flights:
                 logger.warning(" No UI filtered flights to consolidate")
@@ -201,7 +184,7 @@ class TestPart1CoreAutomation:
                     logger.warning(f" Error processing flight {i}: {str(e)}")
                     continue
             
-            # Sort by price (ascending) as per assignment requirement
+            # Sort by price (ascending) as per requirement
             consolidated_data.sort(key=lambda x: x.get('price_numeric', 0))
             
             # Create summary
@@ -381,7 +364,7 @@ class TestPart1CoreAutomation:
             }
 
 
-# Stand-alone execution for PyCharm compatibility
+# Stand-alone execution
 if __name__ == "__main__":
-    # This allows running the test directly from PyCharm
+    # This allows running the test directly
     pytest.main([__file__, "-v", "--tb=short"])

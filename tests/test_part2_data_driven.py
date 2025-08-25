@@ -20,14 +20,41 @@ import sys
 import pytest
 import json
 import time
+import psutil  # For system monitoring
 from typing import List, Dict, Any
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment
 from datetime import datetime
+import gc
 
 # Add project root to path
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_root)
+
+def check_system_resources():
+    """Monitor system resources to prevent overload"""
+    try:
+        memory = psutil.virtual_memory()
+        cpu = psutil.cpu_percent(interval=1)
+        
+        # Log resource usage
+        memory_percent = memory.percent
+        memory_available_gb = memory.available / (1024**3)
+        
+        print(f"      Memory: {memory_percent:.1f}% used, {memory_available_gb:.1f}GB available")
+        print(f"      CPU: {cpu:.1f}% usage")
+        
+        # Warning thresholds
+        if memory_percent > 85:
+            print(f"       HIGH MEMORY USAGE: {memory_percent:.1f}%")
+        if cpu > 80:
+            print(f"       HIGH CPU USAGE: {cpu:.1f}%")
+            
+        return memory_percent < 90 and cpu < 90  # System health check
+        
+    except Exception as e:
+        print(f"       Resource monitoring failed: {e}")
+        return True  # Continue if monitoring fails
 
 from src.automation.flight_filter_engine import PureUIFilterEngine
 from src.utils.config import TestConfig
@@ -75,14 +102,32 @@ class TestPart2DataDrivenAutomation:
         passed_tests = 0
         failed_tests = 0
         
-        # Execute each test case
+        # Execute each test case with resource management
         for idx, config in enumerate(test_configs, 1):
             logger.info(f" Test {idx}/{total_tests}: {config.test_id}")
             logger.info("-" * 50)
             
             try:
+                # Pre-test resource cleanup and monitoring
+                if idx > 1:  # Add delay between tests (except first)
+                    logger.info(f"      System cooldown (3 seconds) + resource cleanup...")
+                    time.sleep(3)
+                    
+                    # Force garbage collection between tests
+                    gc.collect()
+                    
+                    # Check system resources
+                    system_ok = check_system_resources()
+                    if not system_ok:
+                        logger.warning(f"       System resources are high - adding extra cooldown")
+                        time.sleep(5)  # Extra cooldown if system is stressed
+                
                 # Execute UI filter test
+                start_time = time.time()
                 result = automation_engine.test_ui_filter_functionality(config)
+                execution_time = time.time() - start_time
+                
+                logger.info(f"      Test execution time: {execution_time:.1f}s")
                 
                 # CRITICAL: Check if the core operations succeeded FIRST
                 result_status = result.get('status', 'UNKNOWN')
@@ -103,19 +148,42 @@ class TestPart2DataDrivenAutomation:
                     result['filter_status'] = 'TECHNICAL_ERROR'
                     result['user_message'] = f" Technical Error: {error_msg}"
                     
+                elif result_status == 'TIMEOUT':
+                    # Test case exceeded timeout limit
+                    failed_tests += 1
+                    timeout_msg = result.get('error', 'Test timed out')
+                    logger.error(f"     {config.test_id}: TIMEOUT - {timeout_msg}")
+                    result['filter_status'] = 'TIMEOUT'
+                    result['user_message'] = f" Timeout: Test took too long to complete (likely a high-traffic route)"
+                    
                 elif result_status == 'SUCCESS':
-                    # Core operations succeeded, now check if flights were found
+                    # Core operations succeeded, now check if flights were found and validation
                     flights_found = len(result.get('ui_filtered_flights', []))
+                    validation_result = result.get('validation_result', {})
+                    validation_passed = validation_result.get('validation_passed', True)
+                    
                     if flights_found > 0:
-                        passed_tests += 1
-                        logger.info(f"     {config.test_id}: UI Filter Test PASSED - {flights_found} flights found")
-                        result['filter_status'] = 'PASSED'
-                        result['user_message'] = f" Success: Found {flights_found} flights matching your criteria"
+                        # Check if extracted flights match filter criteria
+                        if validation_passed:
+                            passed_tests += 1
+                            logger.info(f"     {config.test_id}: UI Filter Test PASSED - {flights_found} flights found and validated")
+                            result['filter_status'] = 'PASSED'
+                            result['user_message'] = f" Success: Found {flights_found} flights matching your criteria"
+                        else:
+                            # Flights found but don't match criteria - FAIL the test
+                            failed_tests += 1
+                            invalid_count = validation_result.get('invalid_flights', 0)
+                            valid_count = validation_result.get('valid_flights', 0)
+                            logger.error(f"     {config.test_id}: VALIDATION FAILED - {flights_found} flights found but {invalid_count} don't match criteria")
+                            logger.error(f"         Valid: {valid_count}/{flights_found}, Invalid: {invalid_count}/{flights_found}")
+                            result['filter_status'] = 'VALIDATION_FAILED'
+                            result['user_message'] = f" Test Failed: {flights_found} flights found but {invalid_count} don't match filter criteria (price/stops)"
                     else:
+                        # No flights found - still pass 
                         passed_tests += 1  # Core operations worked, just no flights available
                         logger.info(f"     {config.test_id}: No flights found, but test completed successfully")
                         result['filter_status'] = 'NO_FLIGHTS_FOUND'
-                        result['user_message'] = f"ℹ️ No flights found matching your criteria. Try adjusting filters or different dates."
+                        result['user_message'] = f"  No flights found matching your criteria. Try adjusting filters or different dates."
                 else:
                     # Unknown status
                     failed_tests += 1
@@ -134,6 +202,12 @@ class TestPart2DataDrivenAutomation:
                 failed_tests += 1
                 logger.error(f"     {config.test_id}: Test execution failed: {str(e)}")
                 
+                # Emergency stop if too many consecutive failures
+                if failed_tests >= 3 and idx <= 5:  # If 3+ failures in first 5 tests
+                    logger.error(f"      EMERGENCY STOP: Too many failures ({failed_tests}) - System may be unstable")
+                    logger.error(f"      Recommendation: Restart system and try again")
+                    break
+                
                 # Store failure result
                 all_results.append({
                     'test_config': config,
@@ -143,6 +217,13 @@ class TestPart2DataDrivenAutomation:
                     'execution_time': time.time(),
                     'flights_found': 0
                 })
+                
+            # Post-test resource cleanup
+            try:
+                gc.collect()
+                time.sleep(1)  # Brief pause after each test
+            except:
+                pass
         
         # Generate comprehensive Excel report
         results_directory = os.path.join(project_root, "results")
@@ -151,6 +232,14 @@ class TestPart2DataDrivenAutomation:
         report_result = self._generate_part2_report(
             all_results, test_configs, logger, results_directory
         )
+        
+        # Final system report
+        try:
+            final_memory = psutil.virtual_memory().percent
+            final_cpu = psutil.cpu_percent(interval=1)
+            logger.info(f" Final System State - Memory: {final_memory:.1f}%, CPU: {final_cpu:.1f}%")
+        except:
+            pass
         
         # Calculate success metrics
         success_rate = (passed_tests / total_tests) * 100 if total_tests > 0 else 0
@@ -165,6 +254,13 @@ class TestPart2DataDrivenAutomation:
         logger.info(f"   Report Generated: {report_result.get('filename', 'N/A')}")
         logger.info("=" * 80)
         
+        # Final cleanup
+        try:
+            gc.collect()
+            time.sleep(2)  # Final cooldown
+        except:
+            pass
+        
         # Store results for potential use in reporting
         self.test_results = all_results
         
@@ -174,7 +270,9 @@ class TestPart2DataDrivenAutomation:
                                if result.get('filter_status') in [
                                    'CORE_OPERATION_FAILED', 
                                    'TECHNICAL_ERROR', 
+                                   'TIMEOUT',
                                    'TEST_EXECUTION_FAILED',
+                                   'VALIDATION_FAILED',  # Added validation failures
                                    'UNKNOWN_STATUS'
                                ])
         
@@ -182,7 +280,7 @@ class TestPart2DataDrivenAutomation:
             failure_details = []
             for result in all_results:
                 status = result.get('filter_status')
-                if status in ['CORE_OPERATION_FAILED', 'TECHNICAL_ERROR', 'TEST_EXECUTION_FAILED', 'UNKNOWN_STATUS']:
+                if status in ['CORE_OPERATION_FAILED', 'TECHNICAL_ERROR', 'TEST_EXECUTION_FAILED', 'VALIDATION_FAILED', 'UNKNOWN_STATUS']:
                     test_id = result.get('test_config', {}).get('test_id', 'Unknown')
                     message = result.get('user_message', 'Unknown error')
                     failure_details.append(f"{test_id}: {message}")
@@ -193,10 +291,13 @@ class TestPart2DataDrivenAutomation:
         # Success criteria for when core operations work
         assert passed_tests >= 0, "Test execution failed completely"
         
-        # Log that tests passed core validations
+        # Log that tests passed core validations  
         logger.info(f" All {total_tests} tests passed core operation validation")
+        validation_failures = sum(1 for result in all_results if result.get('filter_status') == 'VALIDATION_FAILED')
         if failed_tests == 0:
             logger.info(" 100% test success rate achieved!")
+        elif validation_failures > 0:
+            logger.info(f" {validation_failures} test(s) failed due to validation criteria mismatch")
         
         logger.info(" PART 2 PYTEST DATA-DRIVEN TESTING COMPLETED!")
     
@@ -369,7 +470,6 @@ class TestPart2DataDrivenAutomation:
 # Additional helper functions for pytest integration
 def pytest_configure(config):
     """Configure pytest for Part 2 testing"""
-    import sys
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 

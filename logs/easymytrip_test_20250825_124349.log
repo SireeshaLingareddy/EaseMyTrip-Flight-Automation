@@ -1,0 +1,10 @@
+2025-08-25 12:43:49 - INFO - ================================================================================
+2025-08-25 12:43:49 - INFO -  PYTEST SESSION STARTED - EaseMyTrip Automation
+2025-08-25 12:43:49 - INFO - ================================================================================
+2025-08-25 12:43:49 - INFO - PART 1: Core Flight Search Automation
+2025-08-25 12:43:49 - INFO - Route: Ahmedabad → Goa | Date: 2025-12-01 | Filter: 1 Stop | Price: ₹6,000-₹20,000
+2025-08-25 12:43:50 - INFO - Testing UI Filter: PART1_CORE_PYTEST
+2025-08-25 12:43:50 - INFO -    Description: Part 1 core automation: 1 Stop flights Delhi to Bengaluru with ₹4000-₹8000 price range
+2025-08-25 12:43:50 - INFO -    Route: Ahmedabad → Goa
+2025-08-25 12:43:50 - INFO -    Date: 2025-12-01
+2025-08-25 12:43:50 - INFO -    Filter Test: 1 Stop + ₹6,000-₹20,000

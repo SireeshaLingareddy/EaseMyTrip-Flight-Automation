@@ -1,0 +1,52 @@
+2025-08-25 10:40:53 - INFO - ================================================================================
+2025-08-25 10:40:53 - INFO -  PYTEST SESSION STARTED - EaseMyTrip Automation
+2025-08-25 10:40:53 - INFO - ================================================================================
+2025-08-25 10:40:53 - INFO - PART 1: Core Flight Search Automation
+2025-08-25 10:40:53 - INFO - Route: Ahmedabad → Goa | Date: 2025-12-01 | Filter: 1 Stop | Price: ₹6,000-₹8,000
+2025-08-25 10:40:54 - INFO - Testing UI Filter: PART1_CORE_PYTEST
+2025-08-25 10:40:54 - INFO -    Description: Part 1 core automation: 1 Stop flights Delhi to Bengaluru with ₹4000-₹8000 price range
+2025-08-25 10:40:54 - INFO -    Route: Ahmedabad → Goa
+2025-08-25 10:40:54 - INFO -    Date: 2025-12-01
+2025-08-25 10:40:54 - INFO -    Filter Test: 1 Stop + ₹6,000-₹8,000
+2025-08-25 10:41:02 - INFO -      Selecting FROM city: Ahmedabad
+2025-08-25 10:41:06 - INFO -          FROM: Ahmedabad(AMD)Sardar Vallabhbhai Patel International Airport India Nearby Airport Found (Score: 1000, Airport: AMD)
+2025-08-25 10:41:07 - INFO -          FROM confirmed: Ahmedabad
+2025-08-25 10:41:07 - INFO -      Selecting TO city: Goa
+2025-08-25 10:41:11 - INFO -          TO: Goa(GOI)Dabolim Goa International Airport India Nearby Airport Found (Score: 1000, Airport: GOI)
+2025-08-25 10:41:11 - INFO -          TO confirmed: Goa
+2025-08-25 10:41:12 - INFO -      Verified: Ahmedabad → Goa
+2025-08-25 10:41:12 - INFO -       Setting departure date: 2025-12-01
+2025-08-25 10:41:16 - INFO -          Date set: 01/12/2025
+2025-08-25 10:41:17 - INFO -     Search submitted successfully
+2025-08-25 10:41:32 - INFO -     Results page loaded successfully
+2025-08-25 10:41:32 - INFO -    BEFORE filtering: 73 flights visible
+2025-08-25 10:41:32 - INFO -      Applying UI filters...
+2025-08-25 10:41:34 - INFO -         Applying UI filters: 1 Stop + ₹6,000-₹8,000
+2025-08-25 10:41:34 - INFO -             1. Setting stops filter: 1 Stop
+2025-08-25 10:41:34 - INFO -                 Target checkbox: chkOneStop (keep this CHECKED)
+2025-08-25 10:41:34 - INFO -                 → Unchecked chkNonStop
+2025-08-25 10:41:36 - INFO -                 → Unchecked chkTwoStop
+2025-08-25 10:41:37 - INFO -                 → chkOneStop already checked 
+2025-08-25 10:41:42 - INFO -             2. Dragging price slider handles: ₹6,000-₹8,000
+2025-08-25 10:41:43 - INFO -                 → Requested: ₹6,000 - ₹8,000
+2025-08-25 10:41:43 - INFO -                 → Actual: ₹5,937 - ₹7,896
+2025-08-25 10:41:43 - INFO -                 → Difference: MIN -63 | MAX -104
+2025-08-25 10:41:46 - INFO -             → UPDATED PRICE RANGE: Using ₹5,937-₹7,896 (slider precision limitation)
+2025-08-25 10:41:46 - INFO -             → All subsequent filtering will use the actual slider values
+2025-08-25 10:41:46 - INFO -     Updated config will be used for validation and reporting
+2025-08-25 10:41:46 - INFO -             → UI interaction complete - both filters applied
+2025-08-25 10:41:56 - INFO -     All UI filters applied
+2025-08-25 10:41:56 - INFO -    AFTER UI filtering: 6 flights visible
+2025-08-25 10:41:58 - INFO - Extracted 6 visible flights from 73 total
+2025-08-25 10:41:58 - INFO -    UI Filter Applied - 6 flights data extracted
+2025-08-25 10:41:58 - INFO -     VALIDATION  PASSED: 6/6 valid | Price: ₹5,937-₹7,896 | Stops: 1 Stop
+2025-08-25 10:41:58 - INFO - Success: 6 flights found and validated
+2025-08-25 10:41:58 - INFO -  Consolidation complete: 6 flights meet all criteria
+2025-08-25 10:41:58 - INFO -  Airlines found: IndiGo
+2025-08-25 10:41:58 - INFO -  Price range: ₹7,478 - ₹7,882
+2025-08-25 10:41:58 - INFO -  Saving data to Excel file 
+2025-08-25 10:41:58 - INFO -  Excel file saved successfully: Part1_Core_Automation_Pytest_Results_20250825_104158.xlsx
+2025-08-25 10:41:58 - INFO -  Data format: Assignment compliant (Airline Name, Price, Airport Codes)
+2025-08-25 10:41:58 - INFO -  Consolidation: Grouped by airline, sorted by price
+2025-08-25 10:41:58 - INFO - PART 1 COMPLETED | Flights: 6 | Valid: 6 | Excel: Part1_Core_Automation_Pytest_Results_20250825_104158.xlsx
+2025-08-25 10:41:58 - INFO - Airlines: 1 | Price Range: ₹7,478-₹7,882

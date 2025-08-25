@@ -1,0 +1,22 @@
+2025-08-25 12:55:12 - INFO - ================================================================================
+2025-08-25 12:55:12 - INFO -  PYTEST SESSION STARTED - EaseMyTrip Automation
+2025-08-25 12:55:12 - INFO - ================================================================================
+2025-08-25 12:55:12 - INFO -  PART 2: Data-Driven UI Filter Testing (Pytest)
+2025-08-25 12:55:12 - INFO -  Testing EaseMyTrip UI Filter Functionality ONLY
+2025-08-25 12:55:12 - INFO - ================================================================================
+2025-08-25 12:55:12 - INFO -  Loaded 10 test cases
+2025-08-25 12:55:12 - INFO -  Test 1/10: TC001
+2025-08-25 12:55:12 - INFO - --------------------------------------------------
+2025-08-25 12:55:14 - INFO - Testing UI Filter: TC001
+2025-08-25 12:55:14 - INFO -    Description: Find 1-stop flights from Tirupati to Mumbai with realistic pricing
+2025-08-25 12:55:14 - INFO -    Route: Tirupati → Mumbai
+2025-08-25 12:55:14 - INFO -    Date: 2025-09-01
+2025-08-25 12:55:14 - INFO -    Filter Test: 2+ Stop + ₹6,000-₹7,000
+2025-08-25 12:55:20 - INFO -      Selecting FROM city: Tirupati
+2025-08-25 12:55:21 - INFO -          FROM: Tirupati(TIR)Tirupati Airport India (Score: 1000, Airport: TIR)
+2025-08-25 12:55:21 - INFO -          FROM confirmed: Tirupati
+2025-08-25 12:55:21 - INFO -      Selecting TO city: Mumbai
+2025-08-25 12:55:23 - INFO -          TO: Mumbai(BOM)Chhatrapati Shivaji Maharaj International Airport India Nearby Airport Found (Score: 1000, Airport: BOM)
+2025-08-25 12:55:23 - INFO -          TO confirmed: Mumbai
+2025-08-25 12:55:23 - INFO -      Verified: Tirupati → Mumbai
+2025-08-25 12:55:23 - INFO -       Setting departure date: 2025-09-01

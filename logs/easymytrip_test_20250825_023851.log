@@ -1,0 +1,169 @@
+2025-08-25 02:38:51 - INFO - ================================================================================
+2025-08-25 02:38:51 - INFO -  PYTEST SESSION STARTED - EaseMyTrip Automation
+2025-08-25 02:38:51 - INFO - ================================================================================
+2025-08-25 02:38:51 - INFO -  PART 2: Data-Driven UI Filter Testing (Pytest)
+2025-08-25 02:38:51 - INFO -  Testing EaseMyTrip UI Filter Functionality ONLY
+2025-08-25 02:38:51 - INFO - ================================================================================
+2025-08-25 02:38:51 - INFO -  Loaded 10 test cases
+2025-08-25 02:38:51 - INFO -  Test 1/10: TC001
+2025-08-25 02:38:51 - INFO - --------------------------------------------------
+2025-08-25 02:38:52 - INFO - Testing UI Filter: TC001
+2025-08-25 02:38:52 - INFO -    Description: Find 1-stop flights from Tirupati to Mumbai with realistic pricing
+2025-08-25 02:38:52 - INFO -    Route: Tirupati → Mumbai
+2025-08-25 02:38:52 - INFO -    Date: 2025-09-01
+2025-08-25 02:38:52 - INFO -    Filter Test: 1 Stop + ₹6,000-₹7,000
+2025-08-25 02:38:59 - INFO -      Selecting FROM city: Tirupati
+2025-08-25 02:39:03 - INFO -          FROM: Tirupati(TIR)Tirupati Airport India (Score: 1000, Airport: TIR)
+2025-08-25 02:39:04 - INFO -          FROM confirmed: Tirupati
+2025-08-25 02:39:04 - INFO -      Selecting TO city: Mumbai
+2025-08-25 02:39:07 - INFO -          TO: Mumbai(BOM)Chhatrapati Shivaji Maharaj International Airport India Nearby Airport Found (Score: 1000, Airport: BOM)
+2025-08-25 02:39:08 - INFO -          TO confirmed: Mumbai
+2025-08-25 02:39:09 - INFO -      Verified: Tirupati → Mumbai
+2025-08-25 02:39:09 - INFO -       Setting departure date: 2025-09-01
+2025-08-25 02:39:13 - INFO -          Date set: 01/09/2025
+2025-08-25 02:39:14 - INFO -     Search submitted successfully
+2025-08-25 02:39:29 - INFO -     Results page loaded successfully
+2025-08-25 02:39:29 - INFO -    BEFORE filtering: 46 flights visible
+2025-08-25 02:39:29 - INFO -      Applying UI filters...
+2025-08-25 02:39:34 - INFO -         Applying UI filters: 1 Stop + ₹6,000-₹7,000
+2025-08-25 02:39:34 - INFO -             1. Setting stops filter: 1 Stop
+2025-08-25 02:39:34 - INFO -                 Target checkbox: chkOneStop (keep this CHECKED)
+2025-08-25 02:39:34 - INFO -                 → Unchecked chkNonStop
+2025-08-25 02:39:35 - INFO -                 → Unchecked chkTwoStop
+2025-08-25 02:39:36 - INFO -                 → chkOneStop already checked 
+2025-08-25 02:39:41 - INFO -             2. Dragging price slider handles: ₹6,000-₹7,000
+2025-08-25 02:39:42 - INFO -                 → Requested: ₹6,000 - ₹7,000
+2025-08-25 02:39:42 - INFO -                 → Actual: ₹5,942 - ₹6,951
+2025-08-25 02:39:42 - INFO -                 → Difference: MIN -58 | MAX -49
+2025-08-25 02:39:45 - INFO -             → UPDATED PRICE RANGE: Using ₹5,942-₹6,951 (slider precision limitation)
+2025-08-25 02:39:45 - INFO -             → All subsequent filtering will use the actual slider values
+2025-08-25 02:39:45 - INFO -     Updated config will be used for validation and reporting
+2025-08-25 02:39:45 - INFO -             → UI interaction complete - both filters applied
+2025-08-25 02:39:58 - INFO -     All UI filters applied
+2025-08-25 02:39:58 - INFO -    AFTER UI filtering: 31 flights visible
+2025-08-25 02:40:04 - INFO - Extracted 31 visible flights from 46 total
+2025-08-25 02:40:04 - INFO -    UI Filter Applied - 31 flights data extracted
+2025-08-25 02:40:04 - INFO -     VALIDATION  PASSED: 31/31 valid | Price: ₹5,942-₹6,951 | Stops: 1 Stop
+2025-08-25 02:40:04 - INFO -      ⚡ Test execution time: 72.9s
+2025-08-25 02:40:04 - INFO -      TC001: UI Filter Test PASSED - 31 flights found
+2025-08-25 02:40:05 - INFO -  Test 2/10: TC002
+2025-08-25 02:40:05 - INFO - --------------------------------------------------
+2025-08-25 02:40:05 - INFO -      ⏳ System cooldown (3 seconds) + resource cleanup...
+2025-08-25 02:40:10 - INFO - Testing UI Filter: TC002
+2025-08-25 02:40:10 - INFO -    Description: Find non-stop flights from Ahemdabad to Patna with realistic budget
+2025-08-25 02:40:10 - INFO -    Route: Ahmedabad → Patna
+2025-08-25 02:40:10 - INFO -    Date: 2025-09-02
+2025-08-25 02:40:10 - INFO -    Filter Test: Non-stop + ₹3,000-₹4,500
+2025-08-25 02:40:16 - INFO -      Selecting FROM city: Ahmedabad
+2025-08-25 02:40:20 - INFO -          FROM: Ahmedabad(AMD)Sardar Vallabhbhai Patel International Airport India Nearby Airport Found (Score: 1000, Airport: AMD)
+2025-08-25 02:40:20 - INFO -          FROM confirmed: Ahmedabad
+2025-08-25 02:40:20 - INFO -      Selecting TO city: Patna
+2025-08-25 02:40:24 - INFO -          TO: Patna(PAT)Lok Nayak Jayaprakash Airport India Nearby Airport Found (Score: 1000, Airport: PAT)
+2025-08-25 02:40:25 - INFO -          TO confirmed: Patna
+2025-08-25 02:40:26 - INFO -      Verified: Ahmedabad → Patna
+2025-08-25 02:40:26 - INFO -       Setting departure date: 2025-09-02
+2025-08-25 02:40:29 - INFO -          Date set: 02/09/2025
+2025-08-25 02:40:31 - INFO -     Search submitted successfully
+2025-08-25 02:40:46 - INFO -     Results page loaded successfully
+2025-08-25 02:40:46 - INFO -    BEFORE filtering: 43 flights visible
+2025-08-25 02:40:46 - INFO -      Applying UI filters...
+2025-08-25 02:40:51 - INFO -         Applying UI filters: Non-stop + ₹3,000-₹4,500
+2025-08-25 02:40:51 - INFO -             1. Setting stops filter: Non-stop
+2025-08-25 02:40:51 - INFO -                 Target checkbox: chkNonStop (keep this CHECKED)
+2025-08-25 02:40:51 - INFO -                 → Unchecked chkOneStop
+2025-08-25 02:40:52 - INFO -                 → Unchecked chkTwoStop
+2025-08-25 02:40:53 - INFO -                 → chkNonStop already checked 
+2025-08-25 02:40:58 - INFO -             2. Dragging price slider handles: ₹3,000-₹4,500
+2025-08-25 02:40:59 - INFO -                 → Requested: ₹3,000 - ₹4,500
+2025-08-25 02:40:59 - INFO -                 → Actual: ₹6,411 - ₹6,411
+2025-08-25 02:40:59 - INFO -                 → Difference: MIN +3,411 | MAX +1,911
+2025-08-25 02:41:02 - INFO -             → UPDATED PRICE RANGE: Using ₹6,411-₹6,411 (slider precision limitation)
+2025-08-25 02:41:02 - INFO -             → All subsequent filtering will use the actual slider values
+2025-08-25 02:41:02 - INFO -     Updated config will be used for validation and reporting
+2025-08-25 02:41:02 - INFO -             → UI interaction complete - both filters applied
+2025-08-25 02:41:15 - INFO -     All UI filters applied
+2025-08-25 02:41:15 - INFO -    AFTER UI filtering: 0 flights visible
+2025-08-25 02:41:20 - WARNING - No flights visible in UI - filtering may have hidden all flights
+2025-08-25 02:41:20 - INFO -    UI Filter Applied - 0 flights data extracted
+2025-08-25 02:41:20 - INFO -     VALIDATION: No flights to validate
+2025-08-25 02:41:20 - INFO -      ⚡ Test execution time: 71.7s
+2025-08-25 02:41:20 - INFO -      TC002: No flights found, but test completed successfully
+2025-08-25 02:41:21 - INFO -  Test 3/10: TC003
+2025-08-25 02:41:21 - INFO - --------------------------------------------------
+2025-08-25 02:41:21 - INFO -      ⏳ System cooldown (3 seconds) + resource cleanup...
+2025-08-25 02:41:26 - INFO - Testing UI Filter: TC003
+2025-08-25 02:41:26 - INFO -    Description: Find 1-stop flights from Bengaluru to Goa with vacation budget
+2025-08-25 02:41:26 - INFO -    Route: Bengaluru → Goa
+2025-08-25 02:41:26 - INFO -    Date: 2025-09-03
+2025-08-25 02:41:26 - INFO -    Filter Test: 1 Stop + ₹1,800-₹4,500
+2025-08-25 02:41:33 - INFO -      Selecting FROM city: Bengaluru
+2025-08-25 02:41:36 - INFO -          FROM: Bengaluru(BLR)Kempegowda International Airport India Nearby Airport Found (Score: 1000, Airport: BLR)
+2025-08-25 02:41:37 - INFO -          FROM confirmed: Bengaluru
+2025-08-25 02:41:37 - INFO -      Selecting TO city: Goa
+2025-08-25 02:41:41 - INFO -          TO: Goa(GOI)Dabolim Goa International Airport India Nearby Airport Found (Score: 1000, Airport: GOI)
+2025-08-25 02:41:42 - INFO -          TO confirmed: Goa
+2025-08-25 02:41:43 - INFO -      Verified: Bengaluru → Goa
+2025-08-25 02:41:43 - INFO -       Setting departure date: 2025-09-03
+2025-08-25 02:41:47 - INFO -          Date set: 03/09/2025
+2025-08-25 02:41:48 - INFO -     Search submitted successfully
+2025-08-25 02:42:03 - INFO -     Results page loaded successfully
+2025-08-25 02:42:03 - INFO -    BEFORE filtering: 52 flights visible
+2025-08-25 02:42:03 - INFO -      Applying UI filters...
+2025-08-25 02:42:08 - INFO -         Applying UI filters: 1 Stop + ₹1,800-₹4,500
+2025-08-25 02:42:08 - INFO -             1. Setting stops filter: 1 Stop
+2025-08-25 02:42:08 - INFO -                 Target checkbox: chkOneStop (keep this CHECKED)
+2025-08-25 02:42:08 - INFO -                 → Unchecked chkNonStop
+2025-08-25 02:42:09 - INFO -                 → Unchecked chkTwoStop
+2025-08-25 02:42:10 - INFO -                 → chkOneStop already checked 
+2025-08-25 02:42:15 - INFO -             2. Dragging price slider handles: ₹1,800-₹4,500
+2025-08-25 02:42:16 - INFO -                 → Requested: ₹1,800 - ₹4,500
+2025-08-25 02:42:16 - INFO -                 → Actual: ₹3,143 - ₹4,432
+2025-08-25 02:42:16 - INFO -                 → Difference: MIN +1,343 | MAX -68
+2025-08-25 02:42:19 - INFO -             → UPDATED PRICE RANGE: Using ₹3,143-₹4,432 (slider precision limitation)
+2025-08-25 02:42:19 - INFO -             → All subsequent filtering will use the actual slider values
+2025-08-25 02:42:19 - INFO -     Updated config will be used for validation and reporting
+2025-08-25 02:42:19 - INFO -             → UI interaction complete - both filters applied
+2025-08-25 02:42:32 - INFO -     All UI filters applied
+2025-08-25 02:42:32 - INFO -    AFTER UI filtering: 5 flights visible
+2025-08-25 02:42:37 - INFO - Extracted 5 visible flights from 52 total
+2025-08-25 02:42:37 - INFO -    UI Filter Applied - 5 flights data extracted
+2025-08-25 02:42:37 - INFO -     VALIDATION  PASSED: 5/5 valid | Price: ₹3,143-₹4,432 | Stops: 1 Stop
+2025-08-25 02:42:37 - INFO -      ⚡ Test execution time: 72.0s
+2025-08-25 02:42:37 - INFO -      TC003: UI Filter Test PASSED - 5 flights found
+2025-08-25 02:42:38 - INFO -  Test 4/10: TC004
+2025-08-25 02:42:38 - INFO - --------------------------------------------------
+2025-08-25 02:42:38 - INFO -      ⏳ System cooldown (3 seconds) + resource cleanup...
+2025-08-25 02:42:43 - INFO - Testing UI Filter: TC004
+2025-08-25 02:42:43 - INFO -    Description: Find 2-stop flights from Hyderabad to Delhi with extended budget
+2025-08-25 02:42:43 - INFO -    Route: Hyderabad → Delhi
+2025-08-25 02:42:43 - INFO -    Date: 2025-09-04
+2025-08-25 02:42:43 - INFO -    Filter Test: 2+ Stop + ₹5,000-₹7,000
+2025-08-25 02:42:49 - INFO -      Selecting FROM city: Hyderabad
+2025-08-25 02:42:53 - INFO -          FROM: Hyderabad(HYD)Rajiv Gandhi International Airport India Nearby Airport Found (Score: 1000, Airport: HYD)
+2025-08-25 02:42:54 - INFO -          FROM confirmed: Hyderabad
+2025-08-25 02:42:54 - INFO -      Selecting TO city: Delhi
+2025-08-25 02:42:58 - INFO -          TO: New Delhi(DEL)Indira Gandhi International Airport India Nearby Airport Found (Score: 700, Airport: DEL)
+2025-08-25 02:42:59 - INFO -          TO confirmed: New Delhi
+2025-08-25 02:43:00 - INFO -      Verified: Hyderabad → New Delhi
+2025-08-25 02:43:00 - INFO -       Setting departure date: 2025-09-04
+2025-08-25 02:43:03 - INFO -          Date set: 04/09/2025
+2025-08-25 02:43:05 - INFO -     Search submitted successfully
+2025-08-25 02:43:20 - INFO -     Results page loaded successfully
+2025-08-25 02:43:20 - INFO -    BEFORE filtering: 142 flights visible
+2025-08-25 02:43:20 - INFO -      Applying UI filters...
+2025-08-25 02:43:25 - INFO -         Applying UI filters: 2+ Stop + ₹5,000-₹7,000
+2025-08-25 02:43:25 - INFO -             1. Setting stops filter: 2+ Stop
+2025-08-25 02:43:25 - INFO -                 Target checkbox: chkTwoStop (keep this CHECKED)
+2025-08-25 02:43:25 - INFO -                 → Unchecked chkNonStop
+2025-08-25 02:43:26 - INFO -                 → Unchecked chkOneStop
+2025-08-25 02:43:27 - INFO -                 → chkTwoStop already checked 
+2025-08-25 02:43:32 - INFO -             2. Dragging price slider handles: ₹5,000-₹7,000
+2025-08-25 02:43:34 - INFO -                 → Requested: ₹5,000 - ₹7,000
+2025-08-25 02:43:34 - INFO -                 → Actual: ₹4,965 - ₹6,936
+2025-08-25 02:43:34 - INFO -                 → Difference: MIN -35 | MAX -64
+2025-08-25 02:43:37 - INFO -             → UPDATED PRICE RANGE: Using ₹4,965-₹6,936 (slider precision limitation)
+2025-08-25 02:43:37 - INFO -             → All subsequent filtering will use the actual slider values
+2025-08-25 02:43:37 - INFO -     Updated config will be used for validation and reporting
+2025-08-25 02:43:37 - INFO -             → UI interaction complete - both filters applied
+2025-08-25 02:43:50 - INFO -     All UI filters applied
+2025-08-25 02:43:50 - INFO -    AFTER UI filtering: 1 flights visible

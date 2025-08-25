@@ -31,14 +31,15 @@ def run_part1():
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     html_report = os.path.join(part1_dir, f"Part1_Pytest_Report_{timestamp}.html")
     
+    # Build pytest command with specific options for Part 1 testing
     pytest_cmd = [
-        sys.executable, "-m", "pytest",
-        "tests/test_part1_core_automation.py",
-        "--verbose",
-        "--tb=short",
-        "--disable-warnings",
-        f"--html={html_report}",
-        "--self-contained-html"
+        sys.executable, "-m", "pytest",         # Run pytest using current Python interpreter
+        "tests/test_part1_core_automation.py",  # Target specific test file for Part 1
+        "--verbose",                            # Show detailed test output and progress
+        "--tb=short",                          # Use short format for error tracebacks
+        "--disable-warnings",                  # Hide warning messages for cleaner output
+        f"--html={html_report}",              # Generate HTML report at specified location
+        "--self-contained-html"                # Embed CSS/JS in HTML (single file report)
     ]
     
     print(" Running Part 1 Core Automation Tests...")
@@ -54,14 +55,15 @@ def run_part2():
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     html_report = os.path.join(part2_dir, f"Part2_Pytest_Report_{timestamp}.html")
     
+    # Build pytest command with specific options for Part 2 data-driven testing
     pytest_cmd = [
-        sys.executable, "-m", "pytest",
-        "tests/test_part2_data_driven.py",
-        "--verbose",
-        "--tb=short",
-        "--disable-warnings",
-        f"--html={html_report}",
-        "--self-contained-html"
+        sys.executable, "-m", "pytest",         # Run pytest using current Python interpreter
+        "tests/test_part2_data_driven.py",      # Target specific test file for Part 2
+        "--verbose",                            # Show detailed test output and progress
+        "--tb=short",                          # Use short format for error tracebacks
+        "--disable-warnings",                  # Hide warning messages for cleaner output
+        f"--html={html_report}",              # Generate HTML report at specified location
+        "--self-contained-html"                # Embed CSS/JS in HTML (single file report)
     ]
     
     print(" Running Part 2 Data-Driven Tests...")
